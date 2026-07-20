@@ -22,30 +22,38 @@ def get_db():
         db.close()
 
 
+# Shared response wrapper - matches the team-wide API contract:
+# { "success": bool, "data": ..., "error": str | None }
+def success(data):
+    return {"success": True, "data": data, "error": None}
+
+
 # Create Memory
-@router.post("/", response_model=MemoryResponse)
+@router.post("/")
 def create_memory_route(
     memory: MemoryCreate,
     db: Session = Depends(get_db)
 ):
-    return create_memory(db, memory)
+    result = create_memory(db, memory)
+    return success(MemoryResponse.model_validate(result).model_dump())
 
 
 # Get All Memories
-@router.get("/", response_model=list[MemoryResponse])
+@router.get("/")
 def get_memories_route(
     db: Session = Depends(get_db)
 ):
-    return get_all_memories(db)
+    results = get_all_memories(db)
+    return success([MemoryResponse.model_validate(r).model_dump() for r in results])
 
 
 # Search Memories
-@router.get("/search", response_model=list[MemoryResponse])
+@router.get("/search")
 def search_memories(
     keyword: str = Query(...),
     db: Session = Depends(get_db)
 ):
-    return (
+    results = (
         db.query(Memory)
         .filter(
             (Memory.title.contains(keyword)) |
@@ -54,49 +62,55 @@ def search_memories(
         )
         .all()
     )
+    return success([MemoryResponse.model_validate(r).model_dump() for r in results])
 
 
 # Important Memories
-@router.get("/important", response_model=list[MemoryResponse])
+@router.get("/important")
 def important_memories(
     min_importance: int = 3,
     db: Session = Depends(get_db)
 ):
-    return (
+    results = (
         db.query(Memory)
         .filter(Memory.importance >= min_importance)
         .order_by(Memory.importance.desc())
         .all()
     )
+    return success([MemoryResponse.model_validate(r).model_dump() for r in results])
 
 
 # Timeline
-@router.get("/timeline", response_model=list[MemoryResponse])
+@router.get("/timeline")
 def memory_timeline(
     db: Session = Depends(get_db)
 ):
-    return (
+    results = (
         db.query(Memory)
         .order_by(Memory.created_at.desc())
         .all()
     )
+    return success([MemoryResponse.model_validate(r).model_dump() for r in results])
 
 
 # Category Filter
-@router.get("/category/{category}", response_model=list[MemoryResponse])
+@router.get("/category/{category}")
 def memories_by_category(
     category: str,
     db: Session = Depends(get_db)
 ):
-    return (
+    results = (
         db.query(Memory)
         .filter(Memory.category == category)
         .all()
     )
+    return success([MemoryResponse.model_validate(r).model_dump() for r in results])
 
-@router.get("/retrieve", response_model=list[MemoryResponse])
+
+@router.get("/retrieve")
 def retrieve_memory_context(
     keyword: str = Query(...),
     db: Session = Depends(get_db)
 ):
-    return retrieve_relevant_memories(db, keyword)
+    results = retrieve_relevant_memories(db, keyword)
+    return success([MemoryResponse.model_validate(r).model_dump() for r in results])
