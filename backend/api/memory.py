@@ -4,6 +4,7 @@ from services.memory_service import (
     get_all_memories,
     retrieve_relevant_memories,
 )
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from database.db import SessionLocal
@@ -101,7 +102,7 @@ def memories_by_category(
 ):
     results = (
         db.query(Memory)
-        .filter(Memory.category == category)
+        .filter(func.lower(Memory.category) == category.lower())
         .all()
     )
     return success([MemoryResponse.model_validate(r).model_dump() for r in results])
