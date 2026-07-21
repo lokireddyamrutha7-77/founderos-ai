@@ -18,6 +18,7 @@ def test_connectivity():
         print("Attempting to connect to Gemini API...")
         client = get_gemini_client()
         
+        # Exact model string from your active model list
         response = client.models.generate_content(
             model='gemini-3.5-flash',
             contents='Respond with the single word: "Connected!"'
