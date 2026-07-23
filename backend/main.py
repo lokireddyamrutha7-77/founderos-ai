@@ -1,5 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from database.db import Base, engine
 from models.memory import Memory
@@ -19,6 +21,29 @@ app.add_middleware(
 )
 
 app.include_router(memory_router)
+
+
+# These two handlers make sure EVERY error response - not just the ones we
+# write ourselves - follows the team-wide contract: {success, data, error}.
+# Without this, invalid input (e.g. importance=99) would return FastAPI's
+# default error shape instead, which breaks the frontend's unwrap() logic.
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    first_error = exc.errors()[0]
+    field = ".".join(str(loc) for loc in first_error["loc"] if loc != "body")
+    message = f"{field}: {first_error['msg']}" if field else first_error["msg"]
+    return JSONResponse(
+        status_code=422,
+        content={"success": False, "data": None, "error": message},
+    )
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=500,
+        content={"success": False, "data": None, "error": "Something went wrong. Please try again."},
+    )
 
 
 @app.get("/")
