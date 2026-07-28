@@ -17,8 +17,29 @@ export async function createMemory(memory) {
   return unwrap(res);
 }
 
-export async function getAllMemories() {
-  const res = await api.get("/memory/");
+// Returns { items, total, skip, limit } - paginated.
+export async function getAllMemories(skip = 0, limit = 50) {
+  const res = await api.get("/memory/", { params: { skip, limit } });
+  return unwrap(res);
+}
+
+export async function getMemoryById(id) {
+  const res = await api.get(`/memory/${id}`);
+  return unwrap(res);
+}
+
+export async function updateMemory(id, memory) {
+  const res = await api.put(`/memory/${id}`, memory);
+  return unwrap(res);
+}
+
+export async function deleteMemory(id) {
+  const res = await api.delete(`/memory/${id}`);
+  return unwrap(res);
+}
+
+export async function getMemoryStats() {
+  const res = await api.get("/memory/stats");
   return unwrap(res);
 }
 

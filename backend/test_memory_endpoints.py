@@ -40,11 +40,20 @@ def main():
     memory_id = body.get("data", {}).get("id")
     all_passed &= check("Create memory returns an id", memory_id is not None)
 
-    # 2. Get all memories
+    # 2. Get all memories (paginated)
     r = requests.get(f"{BASE}/")
     body = r.json()
     all_passed &= check("Get all memories returns 200", r.status_code == 200)
-    all_passed &= check("Get all memories returns a list", isinstance(body.get("data"), list))
+    all_passed &= check(
+        "Get all memories returns paginated shape",
+        isinstance(body.get("data", {}).get("items"), list) and "total" in body.get("data", {}),
+    )
+
+    # 2b. Stats endpoint
+    r = requests.get(f"{BASE}/stats")
+    body = r.json()
+    all_passed &= check("Stats returns 200", r.status_code == 200)
+    all_passed &= check("Stats includes total and by_category", "total" in body.get("data", {}) and "by_category" in body.get("data", {}))
 
     # 3. Get single memory by id
     r = requests.get(f"{BASE}/{memory_id}")

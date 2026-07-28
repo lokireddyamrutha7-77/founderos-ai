@@ -1,25 +1,39 @@
 import { useEffect, useState } from "react";
-import { Clock } from "lucide-react";
-import { getMemoryTimeline } from "../../services/memory";
+import { Clock, Trash2 } from "lucide-react";
+import { deleteMemory, getMemoryTimeline } from "../../services/memory";
 
 export default function MemoryTimeline() {
   const [memories, setMemories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
+
+  async function load() {
+    try {
+      const data = await getMemoryTimeline();
+      setMemories(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function load() {
-      try {
-        const data = await getMemoryTimeline();
-        setMemories(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
     load();
   }, []);
+
+  async function handleDelete(id) {
+    setDeletingId(id);
+    try {
+      await deleteMemory(id);
+      setMemories((prev) => prev.filter((m) => m.id !== id));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   if (loading) return <p className="text-sm text-neutral-400">Loading timeline...</p>;
   if (error) return <p className="text-sm text-red-500">{error}</p>;
@@ -42,9 +56,19 @@ export default function MemoryTimeline() {
             <div className="p-3 rounded-xl border border-neutral-200 bg-white">
               <div className="flex items-center justify-between mb-1">
                 <h4 className="font-semibold text-sm">{memory.title}</h4>
-                <span className="text-xs text-[#C9A961] uppercase tracking-wide">
-                  {memory.category}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-[#C9A961] uppercase tracking-wide">
+                    {memory.category}
+                  </span>
+                  <button
+                    onClick={() => handleDelete(memory.id)}
+                    disabled={deletingId === memory.id}
+                    className="text-neutral-300 hover:text-red-500 transition disabled:opacity-50"
+                    title="Delete memory"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
               </div>
               <p className="text-sm text-neutral-600">{memory.content}</p>
             </div>

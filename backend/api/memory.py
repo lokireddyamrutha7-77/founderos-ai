@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from services.memory_service import (
+    count_all_memories,
     create_memory,
     delete_memory,
     get_all_memories,
+    get_category_counts,
     get_memory_by_id,
     retrieve_relevant_memories,
     update_memory,
@@ -51,13 +53,32 @@ def create_memory_route(
     return success(MemoryResponse.model_validate(result).model_dump())
 
 
-# Get All Memories
+# Get All Memories (paginated - newest first)
 @router.get("/")
 def get_memories_route(
+    skip: int = 0,
+    limit: int = 50,
     db: Session = Depends(get_db)
 ):
-    results = get_all_memories(db)
-    return success([MemoryResponse.model_validate(r).model_dump() for r in results])
+    results = get_all_memories(db, skip=skip, limit=limit)
+    total = count_all_memories(db)
+    return success({
+        "items": [MemoryResponse.model_validate(r).model_dump() for r in results],
+        "total": total,
+        "skip": skip,
+        "limit": limit,
+    })
+
+
+# Stats - total count and count per category, useful for a Dashboard widget
+@router.get("/stats")
+def memory_stats(
+    db: Session = Depends(get_db)
+):
+    return success({
+        "total": count_all_memories(db),
+        "by_category": get_category_counts(db),
+    })
 
 
 # Search Memories
