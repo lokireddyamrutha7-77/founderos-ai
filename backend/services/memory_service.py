@@ -6,6 +6,7 @@ from schemas.memory import MemoryCreate
 
 def create_memory(db: Session, memory: MemoryCreate):
     new_memory = Memory(
+        user_id=memory.user_id,
         title=memory.title,
         category=memory.category,
         content=memory.content,
@@ -24,6 +25,19 @@ def create_memory(db: Session, memory: MemoryCreate):
 def get_all_memories(db: Session, skip: int = 0, limit: int = 50):
     return (
         db.query(Memory)
+        .order_by(Memory.created_at.desc())
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+
+
+# Ready for when Person 1's auth lands - swap get_all_memories() for this
+# in the API layer once get_current_user() gives us a real user_id.
+def get_memories_by_user(db: Session, user_id: int, skip: int = 0, limit: int = 50):
+    return (
+        db.query(Memory)
+        .filter(Memory.user_id == user_id)
         .order_by(Memory.created_at.desc())
         .offset(skip)
         .limit(limit)
@@ -54,6 +68,7 @@ def update_memory(db: Session, memory_id: int, memory: MemoryCreate):
     if not existing:
         return None
 
+    existing.user_id = memory.user_id
     existing.title = memory.title
     existing.category = memory.category
     existing.content = memory.content
@@ -85,5 +100,21 @@ def retrieve_relevant_memories(db: Session, keyword: str):
             (Memory.tags.contains(keyword))
         )
         .order_by(Memory.importance.desc())
+        .all()
+    )
+
+
+# Built for Person 2's Chat module to call directly. Pulls a small, reliable
+# set of context - most important memories first, then most recent - rather
+# than trying to keyword-match the user's live chat message (keyword matching
+# was ruled out as the default: it's less predictable for a live demo).
+def get_memories_for_chat_context(db: Session, user_id: int = None, limit: int = 5):
+    query = db.query(Memory)
+    if user_id is not None:
+        query = query.filter(Memory.user_id == user_id)
+    return (
+        query
+        .order_by(Memory.importance.desc(), Memory.created_at.desc())
+        .limit(limit)
         .all()
     )
