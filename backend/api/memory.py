@@ -1,8 +1,11 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from services.memory_service import (
     create_memory,
+    delete_memory,
     get_all_memories,
+    get_memory_by_id,
     retrieve_relevant_memories,
+    update_memory,
 )
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -28,6 +31,15 @@ def get_db():
 def success(data):
     return {"success": True, "data": data, "error": None}
 
+
+# ---------------------------------------------------------------------
+# IMPORTANT: fixed-string routes (search, timeline, important, category,
+# retrieve) must all be declared BEFORE the dynamic /{memory_id} routes
+# further down. FastAPI matches routes top-to-bottom, so if /{memory_id}
+# were declared first, a request to /memory/timeline would incorrectly
+# match it (trying to convert "timeline" to an int and failing with a
+# 422 error) instead of reaching the real /timeline route.
+# ---------------------------------------------------------------------
 
 # Create Memory
 @router.post("/")
@@ -115,3 +127,44 @@ def retrieve_memory_context(
 ):
     results = retrieve_relevant_memories(db, keyword)
     return success([MemoryResponse.model_validate(r).model_dump() for r in results])
+
+
+# ---------------------------------------------------------------------
+# Dynamic /{memory_id} routes - must stay BELOW all fixed-string routes above.
+# ---------------------------------------------------------------------
+
+# Get a single memory by ID
+@router.get("/{memory_id}")
+def get_memory_route(
+    memory_id: int,
+    db: Session = Depends(get_db)
+):
+    result = get_memory_by_id(db, memory_id)
+    if not result:
+        raise HTTPException(status_code=404, detail=f"Memory with id {memory_id} not found")
+    return success(MemoryResponse.model_validate(result).model_dump())
+
+
+# Update a memory
+@router.put("/{memory_id}")
+def update_memory_route(
+    memory_id: int,
+    memory: MemoryCreate,
+    db: Session = Depends(get_db)
+):
+    result = update_memory(db, memory_id, memory)
+    if not result:
+        raise HTTPException(status_code=404, detail=f"Memory with id {memory_id} not found")
+    return success(MemoryResponse.model_validate(result).model_dump())
+
+
+# Delete a memory
+@router.delete("/{memory_id}")
+def delete_memory_route(
+    memory_id: int,
+    db: Session = Depends(get_db)
+):
+    deleted = delete_memory(db, memory_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail=f"Memory with id {memory_id} not found")
+    return success({"deleted_id": memory_id})
