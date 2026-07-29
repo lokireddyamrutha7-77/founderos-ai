@@ -4,12 +4,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from database.db import Base, engine
-from models.memory import Memory
+import database.base  # noqa: F401 - registers User and Memory models on Base
+from api.auth import router as auth_router
 from api.memory import router as memory_router
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="FounderOS AI API")
+app = FastAPI(
+    title="Altora API",
+    version="1.0.0"
+)
 
 # Allow the frontend dev server to call this backend during development.
 app.add_middleware(
@@ -20,13 +24,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth_router)
 app.include_router(memory_router)
 
 
-# These two handlers make sure EVERY error response - not just the ones we
+# These three handlers make sure EVERY error response - not just the ones we
 # write ourselves - follows the team-wide contract: {success, data, error}.
-# Without this, invalid input (e.g. importance=99) would return FastAPI's
-# default error shape instead, which breaks the frontend's unwrap() logic.
+# Without this, invalid input (e.g. importance=99) or an auth failure would
+# return FastAPI's default error shape instead, which breaks the frontend's
+# unwrap() logic.
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     first_error = exc.errors()[0]
@@ -55,7 +61,11 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
 
 
 @app.get("/")
-def home():
+def root():
     return {
-        "message": "FounderOS AI Backend is Running 🚀"
+        "success": True,
+        "data": {
+            "message": "Altora Backend Running"
+        },
+        "error": None
     }

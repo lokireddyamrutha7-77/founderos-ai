@@ -9,4 +9,16 @@ const api = axios.create({
   },
 });
 
+// Attach the JWT to every request automatically, once the user is logged in.
+// ASSUMPTION (confirm with Person 1): the login flow stores the token in
+// localStorage under the key "token". If Person 1's login page stores it
+// under a different key or in a different place, update this one spot.
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export default api;
