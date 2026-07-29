@@ -39,13 +39,13 @@ export default function MemorySearch() {
         </div>
         <button
           type="submit"
-          className="px-4 py-2 rounded-full text-sm font-medium bg-[#1A1A1A] text-white hover:opacity-90 transition"
+          disabled={loading || !keyword.trim()}
+          className="px-4 py-2 rounded-full text-sm font-medium bg-[#1A1A1A] text-white hover:opacity-90 transition disabled:opacity-40"
         >
-          Search
+          {loading ? "Searching..." : "Search"}
         </button>
       </form>
 
-      {loading && <p className="text-sm text-neutral-400">Searching...</p>}
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       <div className="flex flex-col gap-3">
@@ -63,8 +63,11 @@ export default function MemorySearch() {
             <p className="text-sm text-neutral-600">{memory.content}</p>
           </div>
         ))}
-        {!loading && results.length === 0 && keyword && (
-          <p className="text-sm text-neutral-400">No memories found.</p>
+        {!loading && results.length === 0 && keyword.trim() && (
+          <p className="text-sm text-neutral-400">No memories found for "{keyword}".</p>
+        )}
+        {!loading && results.length === 0 && !keyword.trim() && (
+          <p className="text-sm text-neutral-400">Search to see what Altora remembers.</p>
         )}
       </div>
     </div>
