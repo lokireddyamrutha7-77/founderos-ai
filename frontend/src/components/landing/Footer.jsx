@@ -1,57 +1,193 @@
+import {
+  Mail,
+  Phone,
+  MapPin,
+  ArrowUpRight,
+} from "lucide-react";
+
 export default function Footer() {
   return (
-    <footer className="bg-[#1A1A1A] text-white mt-24">
-      <div className="max-w-7xl mx-auto px-8 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+    <footer
+      id="about"
+      className="border-t border-[var(--border)] bg-[var(--section)]"
+    >
+      <div className="container py-20">
+
+        <div className="grid gap-12 lg:grid-cols-4">
+
+          {/* Brand */}
 
           <div>
-            <h2 className="text-3xl font-bold text-[#C9A961]">
-              FounderOS
-            </h2>
 
-            <p className="text-gray-400 mt-6">
-              The all-in-one AI platform helping founders build better startups.
+            <div className="flex items-center gap-3">
+
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-r from-violet-500 to-blue-500 text-lg font-bold text-white">
+                F
+              </div>
+
+              <div>
+
+                <h2 className="text-xl font-semibold">
+                  FounderOS
+                </h2>
+
+                <p className="text-sm text-[var(--muted)]">
+                  AI Business Operating System
+                </p>
+
+              </div>
+
+            </div>
+
+            <p className="mt-6 leading-7 text-[var(--muted)]">
+              FounderOS helps entrepreneurs manage finance,
+              planning, AI, workspace, analytics, and growth
+              from one intelligent platform.
             </p>
+
           </div>
 
-          <div>
-            <h3 className="text-xl font-semibold mb-6">Product</h3>
+          {/* Product */}
 
-            <ul className="space-y-3 text-gray-400">
-              <li>Features</li>
-              <li>Pricing</li>
-              <li>Dashboard</li>
-              <li>AI Assistant</li>
+          <div>
+
+            <h3 className="mb-5 text-lg font-semibold">
+              Product
+            </h3>
+
+            <ul className="space-y-3 text-[var(--muted)]">
+
+              <li className="hover:text-white transition">
+                Features
+              </li>
+
+              <li className="hover:text-white transition">
+                Workspace
+              </li>
+
+              <li className="hover:text-white transition">
+                AI Advisor
+              </li>
+
+              <li className="hover:text-white transition">
+                Analytics
+              </li>
+
             </ul>
+
           </div>
 
-          <div>
-            <h3 className="text-xl font-semibold mb-6">Resources</h3>
+          {/* Company */}
 
-            <ul className="space-y-3 text-gray-400">
-              <li>Blog</li>
-              <li>Documentation</li>
-              <li>Community</li>
+          <div>
+
+            <h3 className="mb-5 text-lg font-semibold">
+              Company
+            </h3>
+
+            <ul className="space-y-3 text-[var(--muted)]">
+
+              <li className="hover:text-white transition">
+                About
+              </li>
+
+              <li className="hover:text-white transition">
+                Careers
+              </li>
+
+              <li className="hover:text-white transition">
+                Contact
+              </li>
+
+              <li className="hover:text-white transition">
+                Support
+              </li>
+
             </ul>
+
           </div>
 
-          <div>
-            <h3 className="text-xl font-semibold mb-6">Company</h3>
+          {/* Contact */}
 
-            <ul className="space-y-3 text-gray-400">
-              <li>About</li>
-              <li>Privacy</li>
-              <li>Terms</li>
-            </ul>
+          <div>
+
+            <h3 className="mb-5 text-lg font-semibold">
+              Contact
+            </h3>
+
+            <div className="space-y-4">
+
+              <div className="flex items-center gap-3 text-[var(--muted)]">
+
+                <Mail
+                  size={18}
+                  className="text-violet-400"
+                />
+
+                <span>hello@founderos.ai</span>
+
+              </div>
+
+              <div className="flex items-center gap-3 text-[var(--muted)]">
+
+                <Phone
+                  size={18}
+                  className="text-violet-400"
+                />
+
+                <span>+1 (000) 000-0000</span>
+
+              </div>
+
+              <div className="flex items-start gap-3 text-[var(--muted)]">
+
+                <MapPin
+                  size={18}
+                  className="mt-1 text-violet-400"
+                />
+
+                <span>
+                  Chennai,
+                  <br />
+                  India
+                </span>
+
+              </div>
+
+            </div>
+
+            <button className="mt-8 flex items-center gap-2 rounded-full bg-linear-to-r from-violet-500 to-blue-500 px-5 py-3 text-white transition hover:opacity-90">
+
+              Get Started
+
+              <ArrowUpRight size={18} />
+
+            </button>
+
           </div>
 
         </div>
 
-        <hr className="my-10 border-gray-700" />
+        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-[var(--border)] pt-8 text-sm text-[var(--muted)] lg:flex-row">
 
-        <p className="text-center text-gray-500">
-          © 2026 FounderOS. All rights reserved.
-        </p>
+          <p>
+            © {new Date().getFullYear()} FounderOS. All Rights Reserved.
+          </p>
+
+          <div className="flex gap-6">
+
+            <span className="cursor-pointer hover:text-white transition">
+              Privacy Policy
+            </span>
+
+            <span className="cursor-pointer hover:text-white transition">
+              Terms of Service
+            </span>
+
+          </div>
+
+        </div>
+
       </div>
     </footer>
   );

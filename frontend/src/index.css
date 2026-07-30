@@ -1,13 +1,100 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap");
 @import "tailwindcss";
 
-:root {
-  font-family: 'Inter', sans-serif;
+/* =========================
+   FounderOS Design System — Dark Theme
+========================= */
+
+:root{
+  --bg:#0A0A12;
+  --section:#0F0F1A;
+  --card:#12121F;
+
+  --text:#F5F5F7;
+  --muted:#9CA3AF;
+
+  --gold:#8B5CF6;        /* now used as "accent start" (purple) */
+  --gold-dark:#3B82F6;   /* "accent end" (blue) */
+  --gold-light:rgba(139,92,246,0.15);
+
+  --border:rgba(255,255,255,0.08);
+
+  --radius:24px;
+
+  --shadow-sm:0 4px 12px rgba(0,0,0,.3);
+  --shadow-md:0 12px 30px rgba(0,0,0,.4);
+  --shadow-lg:0 24px 70px rgba(0,0,0,.5);
+
+  --transition:.35s cubic-bezier(.4,0,.2,1);
 }
 
-body {
-  margin: 0;
-  background: #FAF7F0;
-  color: #1A1A1A;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Inter",sans-serif;
+  overflow-x:hidden;
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family:"Playfair Display",serif;
+}
+
+img{
+  display:block;
+  max-width:100%;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button{
+  cursor:pointer;
+  border:none;
+  outline:none;
+  font-family:inherit;
+}
+
+section{
+  padding:64px 0;
+}
+
+@media (min-width:1024px){
+  section{
+    padding:110px 0;
+  }
+}
+
+.container{
+  width:min(1280px,92%);
+  margin:auto;
+}
+
+::selection{
+  background:var(--gold);
+  color:white;
+}
+
+::-webkit-scrollbar{
+  width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#3a3a4a;
+  border-radius:100px;
+}
+
+::-webkit-scrollbar-track{
+  background:var(--bg);
 }

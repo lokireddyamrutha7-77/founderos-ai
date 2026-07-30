@@ -1,93 +1,125 @@
-import { Star } from "lucide-react";
+import {
+  Star,
+  Users,
+  Briefcase,
+  Rocket,
+} from "lucide-react";
 
-const testimonials = [
+const stats = [
   {
-    name: "Sarah Johnson",
-    role: "Startup Founder",
-    review:
-      "FounderOS completely changed how I plan and grow my startup. Having an AI co-founder available 24/7 is a huge advantage.",
+    icon: Users,
+    value: "10K+",
+    title: "Founders",
+    description: "Building startups with FounderOS.",
   },
   {
-    name: "David Chen",
-    role: "Tech Entrepreneur",
-    review:
-      "The dashboard, finance tracking, and AI guidance helped me make better decisions faster than ever before.",
+    icon: Briefcase,
+    value: "150+",
+    title: "Business Workflows",
+    description: "Unified into one intelligent platform.",
   },
   {
-    name: "Emily Carter",
-    role: "Business Owner",
-    review:
-      "Beautiful interface, powerful AI, and incredibly useful insights. FounderOS is now my daily workspace.",
+    icon: Rocket,
+    value: "98%",
+    title: "Productivity",
+    description: "Average improvement reported by early users.",
   },
 ];
 
 export default function Testimonials() {
   return (
-    <section className="max-w-7xl mx-auto px-8 py-24">
+    <section id="testimonials" className="py-28">
+      <div className="container">
 
-      <div className="text-center mb-16">
+        <div className="mx-auto max-w-3xl text-center">
 
-        <p className="text-[#C9A961] font-semibold tracking-widest uppercase">
-          Testimonials
-        </p>
+          <span className="rounded-full border border-[var(--border)] bg-white px-4 py-2 text-sm text-[var(--muted)]">
+            Trusted by Modern Founders
+          </span>
 
-        <h2 className="text-5xl font-bold mt-4 text-[#1A1A1A]">
-          Loved by Founders
-        </h2>
+          <h2 className="mt-6 text-5xl font-semibold">
+            Built for ambitious startups.
+          </h2>
 
-        <p className="text-gray-600 mt-5 max-w-2xl mx-auto text-lg">
-          Thousands of entrepreneurs trust FounderOS to build,
-          validate, and scale their businesses.
-        </p>
+          <p className="mt-6 text-lg leading-8 text-[var(--muted)]">
+            FounderOS helps founders spend less time managing tools
+            and more time building products, growing teams,
+            and scaling businesses.
+          </p>
 
-      </div>
+        </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Rating */}
 
-        {testimonials.map((item, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-3xl shadow-lg p-8 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300"
-          >
+        <div className="mt-14 flex justify-center">
 
-            <div className="flex mb-5">
-              {[1,2,3,4,5].map((star)=>(
+          <div className="rounded-full border border-[var(--border)] bg-white px-8 py-4 shadow-sm">
+
+            <div className="flex items-center justify-center gap-2">
+
+              {[...Array(5)].map((_, index) => (
                 <Star
-                  key={star}
+                  key={index}
                   size={18}
-                  fill="#C9A961"
-                  color="#C9A961"
+                  fill="#C59D5F"
+                  color="#C59D5F"
                 />
               ))}
+
             </div>
 
-            <p className="text-gray-600 leading-8 mb-8">
-              "{item.review}"
+            <p className="mt-3 text-center text-sm text-[var(--muted)]">
+              Designed to simplify the founder journey.
             </p>
 
-            <div className="flex items-center gap-4">
+          </div>
 
-              <div className="w-14 h-14 rounded-full bg-[#C9A961] text-white flex items-center justify-center font-bold text-xl">
-                {item.name.charAt(0)}
-              </div>
+        </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">
-                  {item.name}
+        {/* Stats */}
+
+        <div className="mt-16 grid gap-8 md:grid-cols-3">
+
+          {stats.map((item) => {
+
+            const Icon = item.icon;
+
+            return (
+
+              <div
+                key={item.title}
+                className="rounded-3xl border border-[var(--border)] bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+              >
+
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--section)]">
+
+                  <Icon
+                    size={28}
+                    className="text-[var(--gold)]"
+                  />
+
+                </div>
+
+                <h3 className="mt-6 text-4xl font-semibold text-gray-900">
+                  {item.value}
                 </h3>
 
-                <p className="text-gray-500 text-sm">
-                  {item.role}
+                <h4 className="mt-2 text-xl font-medium text-gray-900">
+                  {item.title}
+                </h4>
+
+                <p className="mt-4 leading-7 text-[var(--muted)]">
+                  {item.description}
                 </p>
+
               </div>
 
-            </div>
+            );
+          })}
 
-          </div>
-        ))}
+        </div>
 
       </div>
-
     </section>
   );
 }

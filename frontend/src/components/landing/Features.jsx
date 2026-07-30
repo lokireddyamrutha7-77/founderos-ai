@@ -1,102 +1,105 @@
 import {
   Brain,
-  MessageSquare,
-  BarChart3,
   Wallet,
-  Rocket,
+  FolderKanban,
+  TrendingUp,
+  Database,
   ShieldCheck,
 } from "lucide-react";
 
 const features = [
   {
-    icon: Brain,
-    title: "AI Co-Founder",
-    description:
-      "Get strategic advice, planning, and startup guidance whenever you need it.",
-  },
-  {
-    icon: MessageSquare,
-    title: "Smart Conversations",
-    description:
-      "Chat naturally with your AI assistant to brainstorm, plan, and solve problems.",
-  },
-  {
-    icon: BarChart3,
-    title: "Business Analytics",
-    description:
-      "Track startup growth with interactive dashboards and meaningful insights.",
-  },
-  {
     icon: Wallet,
-    title: "Finance Management",
+    title: "Finance OS",
     description:
-      "Monitor expenses, budgets, and financial health from one workspace.",
+      "Track revenue, expenses, cash flow, and financial health from one intelligent dashboard.",
   },
   {
-    icon: Rocket,
-    title: "Growth Tracking",
+    icon: Brain,
+    title: "AI Business Advisor",
     description:
-      "Set milestones, measure progress, and accelerate business growth.",
+      "Receive smart recommendations, forecasts, and business insights powered by AI.",
+  },
+  {
+    icon: FolderKanban,
+    title: "Workspace",
+    description:
+      "Manage projects, documents, meetings, and daily operations without switching tools.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Growth Analytics",
+    description:
+      "Visualize KPIs, customer trends, and business growth with interactive dashboards.",
+  },
+  {
+    icon: Database,
+    title: "Founder Memory",
+    description:
+      "Store ideas, conversations, strategies, and important decisions in one searchable place.",
   },
   {
     icon: ShieldCheck,
-    title: "Secure Workspace",
+    title: "Secure by Design",
     description:
-      "Your ideas, memories, and business data remain safe and protected.",
+      "Enterprise-grade security and role-based access keep your startup data protected.",
   },
 ];
 
 export default function Features() {
   return (
-    <section className="max-w-7xl mx-auto px-8 py-24">
+    <section id="features" className="py-28">
+      <div className="container">
 
-      <div className="text-center mb-16">
+        <div className="mx-auto mb-20 max-w-3xl text-center">
 
-        <p className="text-[#C9A961] font-semibold uppercase tracking-widest">
-          FEATURES
-        </p>
+          <span className="rounded-full border border-[var(--border)] bg-white px-4 py-2 text-sm text-[var(--muted)]">
+            Everything You Need
+          </span>
 
-        <h2 className="text-5xl font-bold text-[#1A1A1A] mt-4">
-          Everything You Need
-        </h2>
+          <h2 className="mt-6 text-4xl font-semibold lg:text-5xl">
+            One Platform.
+            <br />
+            Every Tool a Founder Needs.
+          </h2>
 
-        <p className="text-gray-600 mt-6 max-w-2xl mx-auto text-lg">
-          FounderOS combines AI, finance, strategy, memory,
-          and business intelligence into one beautiful platform.
-        </p>
+          <p className="mt-6 text-lg leading-8 text-[var(--muted)]">
+            FounderOS replaces scattered tools with one intelligent
+            operating system built specifically for modern founders.
+          </p>
 
-      </div>
+        </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
 
-        {features.map((feature, index) => {
-          const Icon = feature.icon;
+          {features.map((feature) => {
+            const Icon = feature.icon;
 
-          return (
-            <div
-              key={index}
-              className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
-            >
-              <div className="w-16 h-16 rounded-2xl bg-[#FAF7F0] flex items-center justify-center mb-6">
-                <Icon
-                  size={30}
-                  className="text-[#C9A961]"
-                />
+            return (
+              <div
+                key={feature.title}
+                className="group rounded-3xl border border-[var(--border)] bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+              >
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--section)]">
+                  <Icon
+                    size={28}
+                    className="text-[var(--gold)]"
+                  />
+                </div>
+
+                <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+                  {feature.title}
+                </h3>
+
+                <p className="mt-4 leading-7 text-[var(--muted)]">
+                  {feature.description}
+                </p>
               </div>
+            );
+          })}
 
-              <h3 className="text-2xl font-semibold text-[#1A1A1A] mb-4">
-                {feature.title}
-              </h3>
-
-              <p className="text-gray-600 leading-7">
-                {feature.description}
-              </p>
-            </div>
-          );
-        })}
-
+        </div>
       </div>
-
     </section>
   );
 }
