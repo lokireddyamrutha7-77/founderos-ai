@@ -1,37 +1,89 @@
 import os
-import json
+
 from dotenv import load_dotenv
 from google import genai
-from backend.ai.prompts import get_advisor_prompt
+from google.genai import errors, types
+from pydantic import ValidationError
+
+from backend.ai.prompts import (
+    ADVISOR_SYSTEM_PROMPT,
+    get_advisor_prompt,
+)
+from backend.ai.schemas import AdvisorReport
+
 
 load_dotenv()
 
-def get_gemini_client():
+DEFAULT_MODEL = "gemini-3.5-flash"
+
+
+class AdvisorGenerationError(RuntimeError):
+    """
+    Controlled error raised when Gemini cannot produce
+    a valid Advisor report.
+    """
+
+
+def get_gemini_client() -> genai.Client:
     api_key = os.getenv("GEMINI_API_KEY")
+
     if not api_key:
-        raise ValueError("GEMINI_API_KEY environment variable is missing in .env")
+        raise ValueError(
+            "GEMINI_API_KEY is missing. Add it to your local .env file."
+        )
+
     return genai.Client(api_key=api_key)
 
+
 def analyze_startup_idea(idea_description: str) -> dict:
+    cleaned_idea = idea_description.strip()
+
+    if len(cleaned_idea) < 10:
+        raise ValueError(
+            "Startup idea must contain at least 10 characters."
+        )
+
+    if len(cleaned_idea) > 5000:
+        raise ValueError(
+            "Startup idea must contain at most 5,000 characters."
+        )
+
     client = get_gemini_client()
-    prompt = get_advisor_prompt(idea_description)
-    
-    # Use an active model (e.g., gemini-2.5-flash or gemini-2.0-flash)
-    response = client.models.generate_content(
-        model='gemini-3.5-flash',
-        contents=prompt,
+    prompt = get_advisor_prompt(cleaned_idea)
+
+    model_name = os.getenv(
+        "GEMINI_MODEL",
+        DEFAULT_MODEL,
     )
-    
-    raw_text = response.text.strip()
-    
-    # Cleanup markdown code blocks if Gemini wraps output in ```json ... ```
-    if raw_text.startswith("```json"):
-        raw_text = raw_text[7:]
-    if raw_text.startswith("```"):
-        raw_text = raw_text[3:]
-    if raw_text.endswith("```"):
-        raw_text = raw_text[:-3]
-        
-    raw_text = raw_text.strip()
-    
-    return json.loads(raw_text)
+
+    try:
+        response = client.models.generate_content(
+            model=model_name,
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction=ADVISOR_SYSTEM_PROMPT,
+                response_mime_type="application/json",
+                response_json_schema=AdvisorReport.model_json_schema(),
+            ),
+        )
+
+        if not response.text:
+            raise AdvisorGenerationError(
+                "Gemini returned an empty response."
+            )
+
+        report = AdvisorReport.model_validate_json(response.text)
+
+        return report.model_dump(mode="json")
+
+    except errors.APIError as exc:
+        status_code = getattr(exc, "code", "unknown")
+
+        raise AdvisorGenerationError(
+            f"Gemini API request failed with status {status_code}."
+        ) from exc
+
+    except ValidationError as exc:
+        raise AdvisorGenerationError(
+            "Gemini response did not match the Advisor schema."
+        ) from exc
