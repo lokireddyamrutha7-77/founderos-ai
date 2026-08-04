@@ -1,15 +1,13 @@
 import api from "./api";
 
-// Every backend response looks like: { success, data, error }
-// These functions unwrap that and throw if success is false,
-// so components can just try/catch and use the data directly.
-
-function unwrap(response) {
-  const { success, data, error } = response.data;
-  if (!success) {
-    throw new Error(error || "Something went wrong");
+// NOTE: api.js's response interceptor already unwraps to the backend's
+// {success, data, error} body directly - `res` below is NOT a full axios
+// response anymore, it IS {success, data, error}. Don't do res.data.data.
+function unwrap(res) {
+  if (!res.success) {
+    throw new Error(res.error || "Something went wrong");
   }
-  return data;
+  return res.data;
 }
 
 export async function createMemory(memory) {

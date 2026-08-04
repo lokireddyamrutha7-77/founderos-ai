@@ -30,13 +30,15 @@ export default function Login() {
     body.append("username", form.email);
     body.append("password", form.password);
 
+    // NOTE: api.js's response interceptor already unwraps response.data,
+    // so `res` here is either {success, data: {access_token}, error} (if
+    // Person 1's login route follows the team contract) or a raw
+    // {access_token, token_type} (default OAuth2 behavior). Handle both.
     const res = await api.post("/auth/login", body, {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
     });
 
-    // Handle either a wrapped {success, data: {access_token}} response or a
-    // raw {access_token} response - whichever Person 1's endpoint returns.
-    const token = res.data?.data?.access_token || res.data?.access_token;
+    const token = res?.data?.access_token || res?.access_token;
     if (!token) {
       throw new Error("Login succeeded but no token was found in the response.");
     }
@@ -56,7 +58,7 @@ export default function Login() {
       });
       await handleLoginRequest();
     } catch (err) {
-      setError(err.response?.data?.error || err.message);
+      setError(err.error || err.message);
     } finally {
       setLoading(false);
     }
@@ -69,7 +71,7 @@ export default function Login() {
     try {
       await handleLoginRequest();
     } catch (err) {
-      setError(err.response?.data?.error || err.message);
+      setError(err.error || err.message);
     } finally {
       setLoading(false);
     }

@@ -2,9 +2,10 @@ import { createContext, useContext, useState, useEffect } from "react";
 import api from "../services/api";
 
 const AuthContext = createContext(null);
+const TOKEN_KEY = "founderos_token";
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY));
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -15,11 +16,12 @@ export function AuthProvider({ children }) {
         return;
       }
       try {
+        // api.js's response interceptor already unwraps to {success, data, error}
         const res = await api.get("/auth/me");
-        setUser(res.data.data ?? res.data);
+        setUser(res.data);
       } catch (err) {
         // token invalid/expired - clear it
-        localStorage.removeItem("token");
+        localStorage.removeItem(TOKEN_KEY);
         setToken(null);
       } finally {
         setLoading(false);
@@ -29,12 +31,12 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   function login(newToken) {
-    localStorage.setItem("token", newToken);
+    localStorage.setItem(TOKEN_KEY, newToken);
     setToken(newToken);
   }
 
   function logout() {
-    localStorage.removeItem("token");
+    localStorage.removeItem(TOKEN_KEY);
     setToken(null);
     setUser(null);
   }
