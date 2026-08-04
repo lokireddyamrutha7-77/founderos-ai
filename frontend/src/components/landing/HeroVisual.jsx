@@ -11,91 +11,128 @@ const items = [
 export default function HeroVisual() {
   return (
     <div className="relative flex justify-center lg:justify-end">
-      {/* Inline SVG glow illustration — no external image file required */}
+      {/* Inline SVG desk illustration — no external image file required */}
       <svg
-        viewBox="0 0 620 560"
-        className="w-full max-w-[620px]"
+        viewBox="0 0 620 500"
+        className="h-auto w-full max-w-[420px] sm:max-w-[500px] lg:max-w-[620px]"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <linearGradient id="arcGrad1" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#A78BFA" />
-            <stop offset="50%" stopColor="#8B5CF6" />
-            <stop offset="100%" stopColor="#3B82F6" />
+          <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#FCFAF7" />
+            <stop offset="100%" stopColor="#F3ECDF" />
           </linearGradient>
-          <linearGradient id="arcGrad2" x1="0" y1="1" x2="1" y2="0">
-            <stop offset="0%" stopColor="#3B82F6" />
-            <stop offset="100%" stopColor="#60A5FA" />
+          <linearGradient id="screenGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="100%" stopColor="#FAF8F4" />
           </linearGradient>
-          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="14" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-          <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#fff" stopOpacity="1" />
-            <stop offset="100%" stopColor="#fff" stopOpacity="0" />
-          </radialGradient>
+          <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#C59D5F" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="#C59D5F" stopOpacity="0.02" />
+          </linearGradient>
         </defs>
 
-        {/* scattered stars */}
-        {[
-          [40, 60], [90, 180], [30, 340], [520, 90], [560, 220],
-          [480, 400], [70, 480], [550, 480], [20, 220], [500, 60],
-        ].map(([x, y], i) => (
-          <circle key={i} cx={x} cy={y} r={i % 3 === 0 ? 2 : 1.2} fill="#fff" opacity="0.6" />
-        ))}
+        {/* backdrop */}
+        <rect x="0" y="0" width="620" height="500" rx="28" fill="url(#bgGrad)" />
 
-        {/* glowing crescent arcs */}
-        <g filter="url(#glow)">
-          <path
-            d="M 460 40 A 260 260 0 1 1 460 520"
-            fill="none"
-            stroke="url(#arcGrad1)"
-            strokeWidth="10"
-            strokeLinecap="round"
-          />
-          <path
-            d="M 430 110 A 190 190 0 1 1 430 450"
-            fill="none"
-            stroke="url(#arcGrad2)"
-            strokeWidth="6"
-            strokeLinecap="round"
-            opacity="0.8"
-          />
-          <path
-            d="M 470 150 A 140 140 0 1 1 470 410"
-            fill="none"
-            stroke="#C4B5FD"
-            strokeWidth="3"
-            strokeLinecap="round"
-            opacity="0.6"
-          />
+        {/* desk surface shadow */}
+        <ellipse cx="310" cy="430" rx="260" ry="30" fill="#000000" opacity="0.05" />
+
+        {/* plant vase (right) */}
+        <g transform="translate(455,300)">
+          <path d="M-22 90 Q-26 40 -14 0 L14 0 Q26 40 22 90 Z" fill="#EDE3D3" stroke="#DCCBAE" strokeWidth="2" />
+          {[-30, -14, 0, 14, 30].map((x, i) => (
+            <path
+              key={i}
+              d={`M0 0 C ${x * 0.3} -60, ${x} -150, ${x * 1.1} -190`}
+              stroke="#8B8A5C"
+              strokeWidth="3"
+              fill="none"
+              strokeLinecap="round"
+            />
+          ))}
+          {[-30, -14, 0, 14, 30].map((x, i) =>
+            [40, 80, 120, 160].map((t, j) => (
+              <ellipse
+                key={`${i}-${j}`}
+                cx={(x * (t / 190)) * 1.05}
+                cy={-t}
+                rx="7"
+                ry="3"
+                fill="#7C7B4F"
+                opacity="0.85"
+                transform={`rotate(${x > 0 ? 40 : -40} ${(x * (t / 190)) * 1.05} ${-t})`}
+              />
+            ))
+          )}
         </g>
 
-        {/* bright highlight point where arcs converge */}
-        <circle cx="460" cy="40" r="18" fill="url(#starGlow)" />
-        <circle cx="460" cy="520" r="14" fill="url(#starGlow)" />
+        {/* coffee mug (left) */}
+        <g transform="translate(120,360)">
+          <ellipse cx="0" cy="46" rx="34" ry="8" fill="#000" opacity="0.06" />
+          <path d="M-26 0 Q-26 40 -18 44 L18 44 Q26 40 26 0 Z" fill="#EFE7D8" stroke="#D8C7A6" strokeWidth="2" />
+          <ellipse cx="0" cy="0" rx="26" ry="7" fill="#E3D6BC" />
+          <path d="M24 8 Q42 8 42 22 Q42 34 24 32" fill="none" stroke="#D8C7A6" strokeWidth="3" />
+        </g>
+
+        {/* laptop */}
+        <g transform="translate(190,150)">
+          {/* screen */}
+          <rect x="0" y="0" width="260" height="180" rx="10" fill="#1A1A1A" />
+          <rect x="8" y="8" width="244" height="164" rx="4" fill="url(#screenGrad)" />
+
+          <text x="20" y="28" fontFamily="Inter, sans-serif" fontSize="11" fill="#6F6F73">
+            Growth Overview
+          </text>
+          <text x="200" y="28" fontFamily="Inter, sans-serif" fontSize="9" fill="#B8B2A4">
+            Last 6 months
+          </text>
+
+          {/* chart area */}
+          <polyline
+            points="20,140 55,110 90,120 125,80 160,95 195,55 230,70"
+            fill="none"
+            stroke="#C59D5F"
+            strokeWidth="2.5"
+          />
+          <polygon
+            points="20,140 55,110 90,120 125,80 160,95 195,55 230,70 230,155 20,155"
+            fill="url(#chartFill)"
+          />
+          {["20", "55", "90", "125", "160", "195", "230"].map((x, i) => (
+            <circle key={i} cx={x} cy={[140, 110, 120, 80, 95, 55, 70][i]} r="2.5" fill="#C59D5F" />
+          ))}
+
+          {/* base/keyboard */}
+          <path d="M-20 180 L280 180 L300 210 L-40 210 Z" fill="#D4D4D4" />
+          <path d="M-40 210 L300 210 L300 218 L-40 218 Z" fill="#B8B8B8" />
+        </g>
+
+        {/* notebook + pen */}
+        <g transform="translate(330,400)">
+          <rect x="0" y="0" width="150" height="16" rx="3" fill="#FFFFFF" stroke="#E5DCC9" strokeWidth="1.5" />
+          <rect x="4" y="-4" width="142" height="10" rx="2" fill="#FDFCF9" stroke="#E5DCC9" strokeWidth="1.5" />
+          <line x1="90" y1="-10" x2="150" y2="-2" stroke="#C59D5F" strokeWidth="4" strokeLinecap="round" />
+          <circle cx="150" cy="-2" r="3" fill="#8a6a2f" />
+        </g>
       </svg>
 
       {/* floating feature card */}
-      <div className="absolute -right-4 top-10 hidden w-64 rounded-2xl border border-white/10 bg-[var(--card)]/90 p-4 backdrop-blur-md shadow-2xl lg:block">
+      <div className="absolute -right-4 top-6 hidden w-64 rounded-2xl border border-[var(--border)] bg-white p-4 shadow-xl lg:block">
         {items.map((item, i) => {
           const Icon = item.icon;
           return (
             <div
               key={item.title}
               className={`flex items-center gap-3 py-3 ${
-                i !== items.length - 1 ? "border-b border-white/10" : ""
+                i !== items.length - 1 ? "border-b border-[var(--border)]" : ""
               }`}
             >
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5">
-                <Icon size={16} className="text-blue-400" />
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-black">
+                <Icon size={16} className="text-[var(--gold)]" />
               </div>
               <div>
-                <p className="text-sm font-semibold leading-tight text-white">{item.title}</p>
+                <p className="text-sm font-semibold leading-tight text-[var(--text)]">{item.title}</p>
                 <p className="text-xs text-[var(--muted)]">{item.desc}</p>
               </div>
             </div>

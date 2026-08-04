@@ -7,16 +7,17 @@ export default function Badge({ children, icon }) {
       gap-2
       rounded-full
       border
-      border-white/10
-      bg-white/5
+      border-[var(--border)]
+      bg-white
       px-4
       py-2
       text-sm
       font-medium
       text-[var(--muted)]
+      shadow-sm
       "
     >
-      {icon ?? <div className="h-2 w-2 rounded-full bg-violet-400" />}
+      {icon ?? <div className="h-2 w-2 rounded-full bg-[var(--gold)]" />}
       {children}
     </div>
   );

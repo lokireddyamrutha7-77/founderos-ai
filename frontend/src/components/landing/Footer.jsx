@@ -21,7 +21,7 @@ export default function Footer() {
 
             <div className="flex items-center gap-3">
 
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-r from-violet-500 to-blue-500 text-lg font-bold text-white">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-black text-lg font-bold text-white">
                 F
               </div>
 
@@ -57,19 +57,19 @@ export default function Footer() {
 
             <ul className="space-y-3 text-[var(--muted)]">
 
-              <li className="hover:text-white transition">
+              <li className="hover:text-black transition">
                 Features
               </li>
 
-              <li className="hover:text-white transition">
+              <li className="hover:text-black transition">
                 Workspace
               </li>
 
-              <li className="hover:text-white transition">
+              <li className="hover:text-black transition">
                 AI Advisor
               </li>
 
-              <li className="hover:text-white transition">
+              <li className="hover:text-black transition">
                 Analytics
               </li>
 
@@ -87,19 +87,19 @@ export default function Footer() {
 
             <ul className="space-y-3 text-[var(--muted)]">
 
-              <li className="hover:text-white transition">
+              <li className="hover:text-black transition">
                 About
               </li>
 
-              <li className="hover:text-white transition">
+              <li className="hover:text-black transition">
                 Careers
               </li>
 
-              <li className="hover:text-white transition">
+              <li className="hover:text-black transition">
                 Contact
               </li>
 
-              <li className="hover:text-white transition">
+              <li className="hover:text-black transition">
                 Support
               </li>
 
@@ -121,7 +121,7 @@ export default function Footer() {
 
                 <Mail
                   size={18}
-                  className="text-violet-400"
+                  className="text-[var(--gold)]"
                 />
 
                 <span>hello@founderos.ai</span>
@@ -132,7 +132,7 @@ export default function Footer() {
 
                 <Phone
                   size={18}
-                  className="text-violet-400"
+                  className="text-[var(--gold)]"
                 />
 
                 <span>+1 (000) 000-0000</span>
@@ -143,7 +143,7 @@ export default function Footer() {
 
                 <MapPin
                   size={18}
-                  className="mt-1 text-violet-400"
+                  className="mt-1 text-[var(--gold)]"
                 />
 
                 <span>
@@ -156,7 +156,7 @@ export default function Footer() {
 
             </div>
 
-            <button className="mt-8 flex items-center gap-2 rounded-full bg-linear-to-r from-violet-500 to-blue-500 px-5 py-3 text-white transition hover:opacity-90">
+            <button className="mt-8 flex items-center gap-2 rounded-full bg-black px-5 py-3 text-white transition hover:opacity-90">
 
               Get Started
 
@@ -176,11 +176,11 @@ export default function Footer() {
 
           <div className="flex gap-6">
 
-            <span className="cursor-pointer hover:text-white transition">
+            <span className="cursor-pointer hover:text-black transition">
               Privacy Policy
             </span>
 
-            <span className="cursor-pointer hover:text-white transition">
+            <span className="cursor-pointer hover:text-black transition">
               Terms of Service
             </span>
 

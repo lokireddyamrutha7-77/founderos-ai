@@ -25,13 +25,13 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
         scrolled
-          ? "border-b border-white/10 bg-[var(--bg)]/95 backdrop-blur-xl"
+          ? "border-b border-[var(--border)] bg-[var(--bg)]/95 backdrop-blur-xl"
           : "bg-[var(--bg)]/80 backdrop-blur-lg"
       }`}
     >
       <div className="container flex h-20 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <Sparkles className="text-violet-400" size={22} />
+          <Sparkles className="text-[var(--gold)]" size={22} />
           <span className="text-xl font-semibold tracking-tight text-[var(--text)]">
             FounderOS
           </span>
@@ -42,7 +42,7 @@ export default function Navbar() {
             <a
               key={item.name}
               href={item.href}
-              className="flex items-center gap-1 text-[15px] font-medium text-[var(--muted)] transition-colors duration-300 hover:text-white"
+              className="flex items-center gap-1 text-[15px] font-medium text-[var(--muted)] transition-colors duration-300 hover:text-black"
             >
               {item.name}
               {item.dropdown && <ChevronDown size={14} />}
@@ -59,13 +59,13 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <button className="lg:hidden text-white" onClick={() => setMenuOpen(!menuOpen)}>
+        <button className="lg:hidden text-black" onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {menuOpen && (
-        <div className="border-t border-white/10 bg-[var(--bg)] lg:hidden">
+        <div className="animate-fade-in-up border-t border-[var(--border)] bg-[var(--bg)] lg:hidden">
           <div className="flex flex-col gap-5 px-6 py-6">
             {navLinks.map((item) => (
               <a

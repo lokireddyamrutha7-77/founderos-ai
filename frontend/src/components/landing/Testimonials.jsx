@@ -1,3 +1,4 @@
+import Badge from "../ui/Badge";
 import {
   Star,
   Users,
@@ -33,9 +34,7 @@ export default function Testimonials() {
 
         <div className="mx-auto max-w-3xl text-center">
 
-          <span className="rounded-full border border-[var(--border)] bg-white px-4 py-2 text-sm text-[var(--muted)]">
-            Trusted by Modern Founders
-          </span>
+          <Badge>Trusted by Modern Founders</Badge>
 
           <h2 className="mt-6 text-5xl font-semibold">
             Built for ambitious startups.
@@ -80,7 +79,7 @@ export default function Testimonials() {
 
         <div className="mt-16 grid gap-8 md:grid-cols-3">
 
-          {stats.map((item) => {
+          {stats.map((item, index) => {
 
             const Icon = item.icon;
 
@@ -88,7 +87,8 @@ export default function Testimonials() {
 
               <div
                 key={item.title}
-                className="rounded-3xl border border-[var(--border)] bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                style={{ animationDelay: `${index * 80}ms` }}
+                className="animate-fade-in-up rounded-3xl border border-[var(--border)] bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
               >
 
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--section)]">

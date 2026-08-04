@@ -13,15 +13,15 @@ export default function Button({
 }) {
   const variants = {
     primary:
-      "bg-linear-to-r from-violet-500 to-blue-500 text-white hover:opacity-90 shadow-lg shadow-violet-500/20",
+      "bg-black text-white hover:opacity-90 shadow-md",
     secondary:
-      "bg-white/5 border border-white/15 text-white hover:bg-white/10",
+      "bg-white border border-[var(--border)] text-[var(--text)] hover:bg-[var(--section)]",
     outline:
-      "border border-white/20 bg-transparent text-white hover:bg-white/10",
+      "border border-black bg-transparent text-black hover:bg-black hover:text-white",
     gold:
-      "bg-violet-500 text-white hover:brightness-95",
+      "bg-[var(--gold)] text-white hover:brightness-95",
     ghost:
-      "bg-transparent text-white hover:bg-white/5",
+      "bg-transparent text-[var(--text)] hover:bg-[var(--section)]",
   };
 
   const sizes = {

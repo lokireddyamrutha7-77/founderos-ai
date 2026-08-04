@@ -1,3 +1,4 @@
+import Badge from "../ui/Badge";
 import {
   CheckCircle2,
   ArrowRight,
@@ -26,9 +27,7 @@ export default function WhyFounderOS() {
 
           <div>
 
-            <span className="rounded-full border border-[var(--border)] bg-white px-4 py-2 text-sm text-[var(--muted)]">
-              Why FounderOS
-            </span>
+            <Badge>Why FounderOS</Badge>
 
             <h2 className="mt-6 text-5xl font-semibold leading-tight">
               Stop Managing

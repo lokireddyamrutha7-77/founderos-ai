@@ -2,28 +2,28 @@
 @import "tailwindcss";
 
 /* =========================
-   FounderOS Design System — Dark Theme
+   FounderOS Design System — Cream / Gold / Ivory / Black
 ========================= */
 
 :root{
-  --bg:#0A0A12;
-  --section:#0F0F1A;
-  --card:#12121F;
+  --bg:#FAF7F0;
+  --section:#F5F0E6;
+  --card:#FFFFFF;
 
-  --text:#F5F5F7;
-  --muted:#9CA3AF;
+  --text:#1A1A1A;
+  --muted:#6B6B6B;
 
-  --gold:#8B5CF6;        /* now used as "accent start" (purple) */
-  --gold-dark:#3B82F6;   /* "accent end" (blue) */
-  --gold-light:rgba(139,92,246,0.15);
+  --gold:#C59D5F;
+  --gold-dark:#8A6A2F;
+  --gold-light:#F1E4CB;
 
-  --border:rgba(255,255,255,0.08);
+  --border:#E7DFCE;
 
   --radius:24px;
 
-  --shadow-sm:0 4px 12px rgba(0,0,0,.3);
-  --shadow-md:0 12px 30px rgba(0,0,0,.4);
-  --shadow-lg:0 24px 70px rgba(0,0,0,.5);
+  --shadow-sm:0 4px 12px rgba(26,26,26,.06);
+  --shadow-md:0 12px 30px rgba(26,26,26,.08);
+  --shadow-lg:0 24px 70px rgba(26,26,26,.12);
 
   --transition:.35s cubic-bezier(.4,0,.2,1);
 }
@@ -91,10 +91,28 @@ section{
 }
 
 ::-webkit-scrollbar-thumb{
-  background:#3a3a4a;
+  background:var(--gold-light);
   border-radius:100px;
 }
 
 ::-webkit-scrollbar-track{
   background:var(--bg);
+}
+
+/* =========================
+   Subtle entrance animation — used across cards/sections
+========================= */
+@keyframes fadeInUp{
+  from{
+    opacity:0;
+    transform:translateY(16px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.animate-fade-in-up{
+  animation:fadeInUp .6s ease-out both;
 }

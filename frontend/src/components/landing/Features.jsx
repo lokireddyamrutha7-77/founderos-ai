@@ -1,3 +1,4 @@
+import Badge from "../ui/Badge";
 import {
   Brain,
   Wallet,
@@ -53,9 +54,7 @@ export default function Features() {
 
         <div className="mx-auto mb-20 max-w-3xl text-center">
 
-          <span className="rounded-full border border-[var(--border)] bg-white px-4 py-2 text-sm text-[var(--muted)]">
-            Everything You Need
-          </span>
+          <Badge>Everything You Need</Badge>
 
           <h2 className="mt-6 text-4xl font-semibold lg:text-5xl">
             One Platform.
@@ -72,13 +71,14 @@ export default function Features() {
 
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
 
-          {features.map((feature) => {
+          {features.map((feature, index) => {
             const Icon = feature.icon;
 
             return (
               <div
                 key={feature.title}
-                className="group rounded-3xl border border-[var(--border)] bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                style={{ animationDelay: `${index * 80}ms` }}
+                className="group animate-fade-in-up rounded-3xl border border-[var(--border)] bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--section)]">
                   <Icon

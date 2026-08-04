@@ -57,10 +57,10 @@ export default function Pricing() {
     <section id="pricing" className="relative bg-[var(--bg)] py-28">
       <div className="container">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-medium uppercase tracking-wider text-violet-400">
+          <p className="text-sm font-medium uppercase tracking-wider text-[var(--gold-dark)]">
             Pricing
           </p>
-          <h2 className="mt-4 text-4xl font-semibold text-white lg:text-5xl">
+          <h2 className="mt-4 text-4xl font-semibold text-[var(--text)] lg:text-5xl">
             Simple plans for every stage
           </h2>
           <p className="mt-5 text-lg leading-8 text-[var(--muted)]">
@@ -69,26 +69,27 @@ export default function Pricing() {
         </div>
 
         <div className="mt-16 grid gap-8 lg:grid-cols-3">
-          {plans.map((plan) => (
+          {plans.map((plan, index) => (
             <div
               key={plan.name}
-              className={`relative flex flex-col rounded-3xl border p-8 ${
+              style={{ animationDelay: `${index * 100}ms` }}
+              className={`relative flex animate-fade-in-up flex-col rounded-3xl border p-8 ${
                 plan.highlighted
-                  ? "border-violet-500/50 bg-linear-to-b from-violet-500/10 to-transparent"
-                  : "border-white/10 bg-[var(--card)]/60"
+                  ? "border-[var(--gold)]/50 bg-[var(--gold-light)]/40"
+                  : "border-[var(--border)] bg-white"
               }`}
             >
               {plan.highlighted && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-linear-to-r from-violet-500 to-blue-500 px-4 py-1 text-xs font-semibold text-white">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-black px-4 py-1 text-xs font-semibold text-white">
                   Most Popular
                 </span>
               )}
 
-              <h3 className="text-xl font-semibold text-white">{plan.name}</h3>
+              <h3 className="text-xl font-semibold text-[var(--text)]">{plan.name}</h3>
               <p className="mt-2 text-sm text-[var(--muted)]">{plan.desc}</p>
 
               <div className="mt-6 flex items-baseline gap-1">
-                <span className="text-4xl font-semibold text-white">{plan.price}</span>
+                <span className="text-4xl font-semibold text-[var(--text)]">{plan.price}</span>
                 {plan.period && (
                   <span className="text-[var(--muted)]">{plan.period}</span>
                 )}
@@ -97,7 +98,7 @@ export default function Pricing() {
               <ul className="mt-8 flex-1 space-y-4">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-3 text-sm text-[var(--muted)]">
-                    <Check size={16} className="mt-0.5 shrink-0 text-violet-400" />
+                    <Check size={16} className="mt-0.5 shrink-0 text-[var(--gold)]" />
                     <span>{f}</span>
                   </li>
                 ))}
