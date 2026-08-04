@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Brain,
@@ -15,15 +16,22 @@ import {
   X,
 } from "lucide-react";
 
+// NOTE: paths for AI Advisor, Finance, and Chat are assumed to follow the
+// same lowercase convention as /workspace and /memory (confirmed by
+// teammate). Inventory, Milestones, and Settings have no page built yet,
+// so they're intentionally non-navigable "coming soon" items rather than
+// links to a route that would 404. Double-check the three assumed paths
+// against the actual merged App.jsx and adjust the `path` values below
+// if they don't match.
 const navItems = [
-  { name: "Dashboard", icon: LayoutDashboard, active: true },
-  { name: "AI Advisor", icon: Sparkles },
-  { name: "Memory", icon: Brain },
-  { name: "Chat", icon: MessageSquare },
-  { name: "Finance", icon: Wallet },
-  { name: "Inventory", icon: Package },
-  { name: "Milestones", icon: Flag },
-  { name: "Settings", icon: Settings },
+  { name: "Dashboard", icon: LayoutDashboard, path: "/workspace" },
+  { name: "AI Advisor", icon: Sparkles, path: "/advisor" },
+  { name: "Memory", icon: Brain, path: "/memory" },
+  { name: "Chat", icon: MessageSquare, path: "/chat" },
+  { name: "Finance", icon: Wallet, path: "/finance" },
+  { name: "Inventory", icon: Package, path: null },
+  { name: "Milestones", icon: Flag, path: null },
+  { name: "Settings", icon: Settings, path: null },
 ];
 
 // Static placeholder data — swap for real API data once
@@ -44,7 +52,9 @@ const goals = [
   { id: 3, title: "Full integration (Day 8-15)", progress: 20 },
 ];
 
-function SidebarContent({ activeNav, setActiveNav, onNavigate }) {
+function SidebarContent({ onNavigate }) {
+  const location = useLocation();
+
   return (
     <>
       <div className="flex items-center gap-2 px-2">
@@ -55,14 +65,31 @@ function SidebarContent({ activeNav, setActiveNav, onNavigate }) {
       <nav className="mt-10 space-y-1">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeNav === item.name;
+          const isActive = item.path && location.pathname === item.path;
+          const isDisabled = !item.path;
+
+          if (isDisabled) {
+            return (
+              <div
+                key={item.name}
+                className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-[var(--muted)]/50"
+              >
+                <span className="flex items-center gap-3">
+                  <Icon size={18} />
+                  {item.name}
+                </span>
+                <span className="rounded-full bg-[var(--section)] px-2 py-0.5 text-[10px] uppercase tracking-wide">
+                  Soon
+                </span>
+              </div>
+            );
+          }
+
           return (
-            <button
+            <Link
               key={item.name}
-              onClick={() => {
-                setActiveNav(item.name);
-                if (onNavigate) onNavigate();
-              }}
+              to={item.path}
+              onClick={onNavigate}
               className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
                 isActive
                   ? "bg-[var(--gold-light)] text-[var(--text)]"
@@ -71,7 +98,7 @@ function SidebarContent({ activeNav, setActiveNav, onNavigate }) {
             >
               <Icon size={18} />
               {item.name}
-            </button>
+            </Link>
           );
         })}
       </nav>
@@ -80,25 +107,22 @@ function SidebarContent({ activeNav, setActiveNav, onNavigate }) {
 }
 
 export default function Workspace() {
-  const [activeNav, setActiveNav] = useState("Dashboard");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-[var(--bg)] text-[var(--text)]">
       {/* Desktop sidebar — visible lg and up */}
       <aside className="hidden w-64 shrink-0 border-r border-[var(--border)] bg-white p-6 lg:block">
-        <SidebarContent activeNav={activeNav} setActiveNav={setActiveNav} />
+        <SidebarContent />
       </aside>
 
       {/* Mobile sidebar drawer — visible below lg, toggled by hamburger */}
       {mobileNavOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          {/* backdrop */}
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setMobileNavOpen(false)}
           />
-          {/* drawer panel */}
           <div className="relative flex h-full w-72 flex-col border-r border-[var(--border)] bg-white p-6 shadow-2xl">
             <button
               className="absolute right-4 top-4 text-[var(--muted)] hover:text-[var(--text)]"
@@ -106,11 +130,7 @@ export default function Workspace() {
             >
               <X size={22} />
             </button>
-            <SidebarContent
-              activeNav={activeNav}
-              setActiveNav={setActiveNav}
-              onNavigate={() => setMobileNavOpen(false)}
-            />
+            <SidebarContent onNavigate={() => setMobileNavOpen(false)} />
           </div>
         </div>
       )}
@@ -119,7 +139,6 @@ export default function Workspace() {
       <main className="flex-1 p-4 sm:p-6 lg:p-10">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            {/* Hamburger — only visible below lg */}
             <button
               className="text-[var(--text)] lg:hidden"
               onClick={() => setMobileNavOpen(true)}
@@ -139,7 +158,6 @@ export default function Workspace() {
           </div>
         </header>
 
-        {/* Stat cards */}
         <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
           {[
             { label: "Active Ideas", value: "3" },
@@ -159,7 +177,6 @@ export default function Workspace() {
         </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
-          {/* Tasks section */}
           <div className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold">Tasks</h2>
             <ul className="mt-5 space-y-3">
@@ -178,7 +195,6 @@ export default function Workspace() {
             </ul>
           </div>
 
-          {/* Goals section */}
           <div className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold">Goals</h2>
             <ul className="mt-5 space-y-5">
