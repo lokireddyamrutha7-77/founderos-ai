@@ -9,6 +9,10 @@ Startup Idea:
 
 CRITICAL REQUIREMENT: You must return ONLY a raw JSON object. Do not wrap it in markdown blocks (like ```json), and do not include any conversational filler text. The JSON object must match this exact structure:
 
+For "legal_considerations": only mention GENERAL categories of business registration/licensing relevant to this type of business (e.g. business registration, sales tax/GST registration, industry-specific permits). Never give jurisdiction-specific legal advice or reference a specific country/state's laws, since you don't have verified real-time legal data. This is not a substitute for a licensed professional.
+
+For "market_validation" and "growth_strategy": stay general and strategic. Do not invent specific city names, local statistics, or real-time market data you cannot verify.
+
 {{
     "idea_score": 85, 
     "market_validation": "Detailed analysis of target market size, validation signals, and demographics.",
@@ -24,6 +28,7 @@ CRITICAL REQUIREMENT: You must return ONLY a raw JSON object. Do not wrap it in 
     "business_model": "Primary monetization framework and unit economics.",
     "revenue_suggestions": ["Revenue stream idea 1", "Revenue stream idea 2"],
     "growth_strategy": "First 90 days go-to-market and distribution plays.",
-    "next_steps": ["Immediate tactical task 1", "Immediate tactical task 2"]
+    "next_steps": ["Immediate tactical task 1", "Immediate tactical task 2"],
+    "legal_considerations": "General business registration and licensing categories relevant to this type of business (e.g. business registration, sales tax/GST registration, industry-specific permits). Do not give jurisdiction-specific legal advice — consult a licensed professional in your area."
 }}
 """
