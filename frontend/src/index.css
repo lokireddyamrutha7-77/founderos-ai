@@ -12,7 +12,7 @@
 }
 
 /* =========================
-   FounderOS Design System — Cream / Gold / Ivory / Black
+   FounderOS Design System - Cream / Gold / Ivory / Black
 ========================= */
 
 :root{
@@ -110,7 +110,7 @@ section{
 }
 
 /* =========================
-   Subtle entrance animation — used across cards/sections
+   Subtle entrance animation - used across cards/sections
 ========================= */
 @keyframes fadeInUp{
   from{
