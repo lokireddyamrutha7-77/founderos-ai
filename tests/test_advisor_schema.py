@@ -9,32 +9,54 @@ from backend.ai.schemas import AdvisorReport
 
 def create_valid_report() -> dict:
     """
-    Return a complete valid Advisor report for offline testing.
+    Return a complete valid nine-field Advisor report.
     """
 
     return {
         "idea_score": 68,
+
         "market_validation": (
             "Independent real-estate agents need simpler customer "
-            "management, but willingness to pay must be validated."
+            "management, but their willingness to pay and preferred "
+            "workflow must be validated through interviews and a pilot."
         ),
+
         "competitors": [
             {
                 "name": "HubSpot",
-                "weakness": "Can be complex for independent agents.",
-                "advantage": "A simpler real-estate-specific workflow.",
+                "weakness": (
+                    "Its broad feature set can be complex for "
+                    "independent agents."
+                ),
+                "advantage": (
+                    "The proposed product offers a simpler "
+                    "real-estate-specific workflow."
+                ),
             },
             {
                 "name": "Salesforce",
-                "weakness": "Expensive and difficult to configure.",
-                "advantage": "Lower cost and faster setup.",
+                "weakness": (
+                    "It can be expensive and difficult for small "
+                    "teams to configure."
+                ),
+                "advantage": (
+                    "The proposed product offers lower cost and "
+                    "faster setup."
+                ),
             },
             {
                 "name": "Spreadsheets",
-                "weakness": "Require manual updates and reminders.",
-                "advantage": "Automated follow-ups and lead tracking.",
+                "weakness": (
+                    "They require manual updates and do not provide "
+                    "automatic follow-up reminders."
+                ),
+                "advantage": (
+                    "The proposed product automates lead tracking "
+                    "and follow-up activities."
+                ),
             },
         ],
+
         "swot": {
             "strengths": [
                 "Clear customer niche",
@@ -43,7 +65,7 @@ def create_valid_report() -> dict:
             ],
             "weaknesses": [
                 "Crowded CRM market",
-                "Limited initial data",
+                "Limited initial customer data",
                 "Customer-acquisition uncertainty",
             ],
             "opportunities": [
@@ -52,25 +74,36 @@ def create_valid_report() -> dict:
                 "AI follow-up automation",
             ],
             "threats": [
-                "Existing CRM companies",
+                "Established CRM companies",
                 "High customer churn",
                 "Data-privacy concerns",
             ],
         },
+
         "business_model": (
-            "Monthly SaaS subscription with separate individual "
-            "and brokerage pricing plans."
+            "Monthly SaaS subscriptions with separate plans for "
+            "individual agents and brokerage teams."
         ),
+
         "revenue_suggestions": [
-            "Monthly individual-agent subscription",
+            "Individual-agent monthly subscriptions",
             "Brokerage team plans",
-            "Premium AI automation add-on",
+            "Premium AI automation add-ons",
         ],
+
         "growth_strategy": [
             "Days 1-30: interview agents and test a prototype.",
             "Days 31-60: run a paid pilot with one brokerage.",
-            "Days 61-90: launch referrals and brokerage partnerships.",
+            "Days 61-90: test referrals and brokerage partnerships.",
         ],
+
+        "legal_considerations": (
+            "Consider general business registration, applicable sales "
+            "tax or GST registration, data-protection requirements, "
+            "software terms, and any relevant industry permits. "
+            "Consult a licensed professional in your area."
+        ),
+
         "next_steps": [
             "Interview 15 independent agents",
             "Identify their most expensive workflow problem",
@@ -90,7 +123,7 @@ class AdvisorSchemaTests(unittest.TestCase):
 
         self.assertEqual(report.idea_score, 68)
 
-    def test_exactly_eight_fields_are_returned(self):
+    def test_exactly_nine_fields_are_returned(self):
         report = AdvisorReport.model_validate(
             create_valid_report()
         )
@@ -103,12 +136,18 @@ class AdvisorSchemaTests(unittest.TestCase):
             "business_model",
             "revenue_suggestions",
             "growth_strategy",
+            "legal_considerations",
             "next_steps",
         }
 
         self.assertEqual(
             set(report.model_dump().keys()),
             expected_fields,
+        )
+
+        self.assertEqual(
+            len(report.model_dump()),
+            9,
         )
 
     def test_score_above_100_is_rejected(self):
@@ -118,9 +157,16 @@ class AdvisorSchemaTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             AdvisorReport.model_validate(invalid_report)
 
-    def test_missing_field_is_rejected(self):
+    def test_missing_next_steps_is_rejected(self):
         invalid_report = create_valid_report()
         invalid_report.pop("next_steps")
+
+        with self.assertRaises(ValidationError):
+            AdvisorReport.model_validate(invalid_report)
+
+    def test_missing_legal_considerations_is_rejected(self):
+        invalid_report = create_valid_report()
+        invalid_report.pop("legal_considerations")
 
         with self.assertRaises(ValidationError):
             AdvisorReport.model_validate(invalid_report)
@@ -134,6 +180,7 @@ class AdvisorSchemaTests(unittest.TestCase):
 
     def test_incorrect_competitor_type_is_rejected(self):
         invalid_report = create_valid_report()
+
         invalid_report["competitors"] = [
             "HubSpot",
             "Salesforce",
