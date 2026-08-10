@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+env/
+
+# Database
+*.db
+*.sqlite3
+altora.db
+
+# Env secrets
+.env
+
+# OS
+.DS_Store

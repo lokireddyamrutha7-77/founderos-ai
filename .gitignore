@@ -1,7 +1,38 @@
+# Frontend dependencies and build output
+node_modules/
+*/node_modules/
+dist/
+build/
+*/dist/
+*/build/
+
+# Environment files
 .env
+.env.local
+*/.env
+*/.env.local
 **/.env
+**/.env.local
+
+# Python environments and generated files
 __pycache__/
 **/__pycache__/
 *.py[cod]
 .venv/
 venv/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/
+.idea/
