@@ -1,6 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap");
 @import "tailwindcss";
 
+@theme {
+  --color-cream: #FAF7F0;
+  --color-ivory: #FDFBF7;
+  --color-gold: #C9A961;
+  --color-ink: #1A1A1A;
+
+  --font-heading: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+}
+
 /* =========================
    FounderOS Design System — Cream / Gold / Ivory / Black
 ========================= */
