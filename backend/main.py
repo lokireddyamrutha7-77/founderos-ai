@@ -9,6 +9,9 @@ from api.auth import router as auth_router
 from api.memory import router as memory_router
 from api.advisor import router as advisor_router
 from api.chat import router as chat_router
+from api.finance import router as finance_router
+from api.milestones import router as milestones_router
+from api.inventory import router as inventory_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -30,6 +33,9 @@ app.include_router(auth_router)
 app.include_router(memory_router)
 app.include_router(advisor_router)
 app.include_router(chat_router)
+app.include_router(finance_router)
+app.include_router(milestones_router)
+app.include_router(inventory_router)
 
 
 # These three handlers make sure EVERY error response - not just the ones we

@@ -4,3 +4,6 @@ from database.db import Base
 # and Base.metadata.create_all() picks up every table.
 from models.user import User
 from models.memory import Memory
+from models.finance import FinanceSnapshot
+from models.milestone import BusinessMilestone
+from models.inventory import InventoryItem
