@@ -1,3 +1,4 @@
+
 node_modules/
 */node_modules/
 dist/
@@ -14,3 +15,12 @@ npm-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+=======
+.env
+**/.env
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.venv/
+venv/
+
