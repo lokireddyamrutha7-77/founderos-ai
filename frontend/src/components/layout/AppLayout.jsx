@@ -22,8 +22,8 @@ const navItems = [
   { name: "Memory", icon: Brain, path: "/memory" },
   { name: "Chat", icon: MessageSquare, path: "/chat" },
   { name: "Finance", icon: Wallet, path: "/finance" },
-  { name: "Inventory", icon: Package, path: null },
-  { name: "Milestones", icon: Flag, path: null },
+  { name: "Inventory", icon: Package, path: "/inventory" },
+  { name: "Milestones", icon: Flag, path: "/milestones" },
   { name: "Settings", icon: Settings, path: null },
 ];
 

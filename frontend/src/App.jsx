@@ -8,6 +8,8 @@ import Memory from "./pages/Memory";
 import Advisor from "./pages/Advisor";
 import Finance from "./pages/Finance";
 import Chat from "./pages/Chat";
+import Milestones from "./pages/Milestones";
+import Inventory from "./pages/Inventory";
 
 // Wraps any route that requires the user to be logged in, and adds the
 // shared sidebar navigation (originally built by Person 3 inside Workspace,
@@ -72,6 +74,22 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Chat />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/milestones"
+            element={
+              <ProtectedRoute>
+                <Milestones />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/inventory"
+            element={
+              <ProtectedRoute>
+                <Inventory />
               </ProtectedRoute>
             }
           />
