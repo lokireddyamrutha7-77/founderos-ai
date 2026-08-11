@@ -5,11 +5,11 @@ from google import genai
 from google.genai import errors, types
 from pydantic import ValidationError
 
-from backend.ai.prompts import (
+from .prompts import (
     ADVISOR_SYSTEM_PROMPT,
     get_advisor_prompt,
 )
-from backend.ai.schemas import AdvisorReport
+from .schemas import AdvisorReport
 
 
 load_dotenv()
@@ -25,17 +25,28 @@ class AdvisorGenerationError(RuntimeError):
 
 
 def get_gemini_client() -> genai.Client:
+    """
+    Create the Gemini client using the API key from .env.
+    """
+
     api_key = os.getenv("GEMINI_API_KEY")
 
     if not api_key:
         raise ValueError(
-            "GEMINI_API_KEY is missing. Add it to your local .env file."
+            "GEMINI_API_KEY is missing. "
+            "Add it to your local .env file."
         )
 
     return genai.Client(api_key=api_key)
 
 
-def analyze_startup_idea(idea_description: str) -> dict:
+def analyze_startup_idea(
+    idea_description: str,
+) -> dict:
+    """
+    Generate and validate a nine-field startup analysis.
+    """
+
     cleaned_idea = idea_description.strip()
 
     if len(cleaned_idea) < 10:
@@ -63,7 +74,9 @@ def analyze_startup_idea(idea_description: str) -> dict:
             config=types.GenerateContentConfig(
                 system_instruction=ADVISOR_SYSTEM_PROMPT,
                 response_mime_type="application/json",
-                response_json_schema=AdvisorReport.model_json_schema(),
+                response_json_schema=(
+                    AdvisorReport.model_json_schema()
+                ),
             ),
         )
 
@@ -72,18 +85,26 @@ def analyze_startup_idea(idea_description: str) -> dict:
                 "Gemini returned an empty response."
             )
 
-        report = AdvisorReport.model_validate_json(response.text)
+        report = AdvisorReport.model_validate_json(
+            response.text
+        )
 
         return report.model_dump(mode="json")
 
     except errors.APIError as exc:
-        status_code = getattr(exc, "code", "unknown")
+        status_code = getattr(
+            exc,
+            "code",
+            "unknown",
+        )
 
         raise AdvisorGenerationError(
-            f"Gemini API request failed with status {status_code}."
+            "Gemini API request failed "
+            f"with status {status_code}."
         ) from exc
 
     except ValidationError as exc:
         raise AdvisorGenerationError(
-            "Gemini response did not match the Advisor schema."
+            "Gemini response did not match "
+            "the Advisor schema."
         ) from exc
