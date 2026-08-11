@@ -1,3 +1,21 @@
+
+node_modules/
+*/node_modules/
+dist/
+build/
+*/dist/
+*/build/
+.env
+.env.local
+*/.env
+*/.env.local
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+=======
 .env
 **/.env
 __pycache__/
@@ -5,3 +23,4 @@ __pycache__/
 *.py[cod]
 .venv/
 venv/
+
