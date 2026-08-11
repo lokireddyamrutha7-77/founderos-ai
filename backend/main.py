@@ -7,6 +7,7 @@ from database.db import Base, engine
 import database.base  # noqa: F401 - registers User and Memory models on Base
 from api.auth import router as auth_router
 from api.memory import router as memory_router
+from api.advisor import router as advisor_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -26,6 +27,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(memory_router)
+app.include_router(advisor_router)
 
 
 # These three handlers make sure EVERY error response - not just the ones we
