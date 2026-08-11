@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getAllMemories } from "../../services/memory";
 
@@ -42,11 +42,11 @@ export default function MemoryBrowse({ refreshKey }) {
       {items.map((memory) => (
         <div
           key={memory.id}
-          className="p-4 rounded-2xl border border-neutral-200 bg-white"
+          className="p-4 rounded-2xl border border-[var(--gold-light)] bg-[#FDFBF7] shadow-sm"
         >
           <div className="flex items-center justify-between mb-1">
-            <h4 className="font-semibold text-sm">{memory.title}</h4>
-            <span className="text-xs text-[#C9A961] uppercase tracking-wide">
+            <h4 className="font-semibold text-sm text-neutral-800">{memory.title}</h4>
+            <span className="rounded-full bg-[var(--gold-light)]/50 px-3 py-0.5 text-xs font-medium uppercase tracking-wide text-[var(--gold-dark)]">
               {memory.category}
             </span>
           </div>
@@ -59,7 +59,7 @@ export default function MemoryBrowse({ refreshKey }) {
           <button
             onClick={() => setPage((p) => Math.max(0, p - 1))}
             disabled={page === 0}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border border-neutral-200 hover:bg-neutral-50 transition disabled:opacity-40"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border border-[var(--gold-light)] hover:bg-[var(--gold-light)]/30 transition disabled:opacity-40"
           >
             <ChevronLeft size={14} /> Prev
           </button>
@@ -69,7 +69,7 @@ export default function MemoryBrowse({ refreshKey }) {
           <button
             onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
             disabled={page >= totalPages - 1}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border border-neutral-200 hover:bg-neutral-50 transition disabled:opacity-40"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border border-[var(--gold-light)] hover:bg-[var(--gold-light)]/30 transition disabled:opacity-40"
           >
             Next <ChevronRight size={14} />
           </button>

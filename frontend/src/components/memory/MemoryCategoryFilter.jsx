@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { getMemoriesByCategory } from "../../services/memory";
 
 const CATEGORIES = ["idea", "conversation", "goal", "note", "business"];
@@ -34,8 +34,8 @@ export default function MemoryCategoryFilter() {
             onClick={() => setActive(cat)}
             className={`px-4 py-1.5 rounded-full text-sm font-medium capitalize transition ${
               active === cat
-                ? "bg-[#1A1A1A] text-white"
-                : "bg-white border border-neutral-200 text-neutral-600 hover:border-[#C9A961]"
+                ? "bg-black text-white"
+                : "bg-white border border-[var(--gold-light)] text-neutral-600 hover:bg-[var(--gold-light)]/30"
             }`}
           >
             {cat}
@@ -50,11 +50,11 @@ export default function MemoryCategoryFilter() {
         {memories.map((memory) => (
           <div
             key={memory.id}
-            className="p-4 rounded-2xl border border-neutral-200 bg-white"
+            className="p-4 rounded-2xl border border-[var(--gold-light)] bg-[#FDFBF7] shadow-sm"
           >
             <div className="flex items-center justify-between mb-1">
-              <h4 className="font-semibold text-sm">{memory.title}</h4>
-              <span className="text-xs text-[#C9A961] uppercase tracking-wide">
+              <h4 className="font-semibold text-sm text-neutral-800">{memory.title}</h4>
+              <span className="rounded-full bg-[var(--gold-light)]/50 px-3 py-0.5 text-xs font-medium uppercase tracking-wide text-[var(--gold-dark)]">
                 {memory.category}
               </span>
             </div>

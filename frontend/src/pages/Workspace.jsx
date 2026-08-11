@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import {
   LayoutDashboard,
   Brain,
@@ -14,6 +15,10 @@ import {
   Target,
   Menu,
   X,
+  LogOut,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Clock,
 } from "lucide-react";
 
 // NOTE: paths for AI Advisor, Finance, and Chat are assumed to follow the
@@ -52,17 +57,33 @@ const goals = [
   { id: 3, title: "Full integration (Day 8-15)", progress: 20 },
 ];
 
-function SidebarContent({ onNavigate }) {
+const activity = [
+  { id: 1, text: "Signed up and created your account", time: "Just now" },
+  { id: 2, text: "Reviewed the Foundations phase checklist", time: "2 hours ago" },
+  { id: 3, text: "Workspace dashboard shell set up", time: "Yesterday" },
+];
+
+function SidebarContent({ onNavigate, collapsed }) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  function handleLogout() {
+    logout();
+    if (onNavigate) onNavigate();
+    navigate("/login");
+  }
 
   return (
-    <>
-      <div className="flex items-center gap-2 px-2">
-        <Sparkles className="text-[var(--gold)]" size={22} />
-        <span className="text-lg font-semibold text-[var(--text)]">FounderOS</span>
+    <div className="flex h-full flex-col">
+      <div className={`flex items-center gap-2 px-2 ${collapsed ? "justify-center" : ""}`}>
+        <Sparkles className="shrink-0 text-[var(--gold)]" size={22} />
+        {!collapsed && (
+          <span className="text-lg font-semibold text-[var(--text)]">FounderOS</span>
+        )}
       </div>
 
-      <nav className="mt-10 space-y-1">
+      <nav className="mt-10 flex-1 space-y-1">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = item.path && location.pathname === item.path;
@@ -72,15 +93,20 @@ function SidebarContent({ onNavigate }) {
             return (
               <div
                 key={item.name}
-                className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-[var(--muted)]/50"
+                title={collapsed ? `${item.name} — Soon` : undefined}
+                className={`flex items-center rounded-xl px-4 py-3 text-sm font-medium text-[var(--muted)]/50 ${
+                  collapsed ? "justify-center" : "w-full justify-between"
+                }`}
               >
                 <span className="flex items-center gap-3">
                   <Icon size={18} />
-                  {item.name}
+                  {!collapsed && item.name}
                 </span>
-                <span className="rounded-full bg-[var(--section)] px-2 py-0.5 text-[10px] uppercase tracking-wide">
-                  Soon
-                </span>
+                {!collapsed && (
+                  <span className="rounded-full bg-[var(--section)] px-2 py-0.5 text-[10px] uppercase tracking-wide">
+                    Soon
+                  </span>
+                )}
               </div>
             );
           }
@@ -90,30 +116,58 @@ function SidebarContent({ onNavigate }) {
               key={item.name}
               to={item.path}
               onClick={onNavigate}
-              className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
+              title={collapsed ? item.name : undefined}
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
+                collapsed ? "justify-center" : "w-full"
+              } ${
                 isActive
                   ? "bg-[var(--gold-light)] text-[var(--text)]"
                   : "text-[var(--muted)] hover:bg-[var(--section)] hover:text-[var(--text)]"
               }`}
             >
               <Icon size={18} />
-              {item.name}
+              {!collapsed && item.name}
             </Link>
           );
         })}
       </nav>
-    </>
+
+      <button
+        onClick={handleLogout}
+        title={collapsed ? "Log Out" : undefined}
+        className={`flex items-center gap-3 rounded-xl border-t border-[var(--border)] px-4 py-3 pt-4 text-sm font-medium text-[var(--muted)] transition-colors hover:text-red-600 ${
+          collapsed ? "justify-center" : "w-full"
+        }`}
+      >
+        <LogOut size={18} />
+        {!collapsed && "Log Out"}
+      </button>
+    </div>
   );
 }
 
 export default function Workspace() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-[var(--bg)] text-[var(--text)]">
-      {/* Desktop sidebar — visible lg and up */}
-      <aside className="hidden w-64 shrink-0 border-r border-[var(--border)] bg-white p-6 lg:block">
-        <SidebarContent />
+      {/* Desktop sidebar — visible lg and up, collapsible like Claude's sidebar */}
+      <aside
+        className={`relative hidden h-screen shrink-0 border-r border-[var(--border)] bg-white p-4 transition-all duration-300 lg:block ${
+          collapsed ? "w-20" : "w-64 p-6"
+        }`}
+      >
+        <SidebarContent collapsed={collapsed} />
+
+        {/* Collapse/expand toggle */}
+        <button
+          onClick={() => setCollapsed((c) => !c)}
+          className="absolute -right-3 top-8 flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border)] bg-white text-[var(--muted)] shadow-sm transition-colors hover:text-[var(--text)]"
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {collapsed ? <PanelLeftOpen size={14} /> : <PanelLeftClose size={14} />}
+        </button>
       </aside>
 
       {/* Mobile sidebar drawer — visible below lg, toggled by hamburger */}
@@ -217,6 +271,22 @@ export default function Workspace() {
               ))}
             </ul>
           </div>
+        </div>
+
+        {/* Recent Activity — fills out the page, gives demo-day visual weight */}
+        <div className="mt-6 rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-semibold">Recent Activity</h2>
+          <ul className="mt-5 space-y-4">
+            {activity.map((item) => (
+              <li key={item.id} className="flex items-start gap-3 text-sm">
+                <Clock size={16} className="mt-0.5 shrink-0 text-[var(--gold)]" />
+                <div className="flex flex-1 flex-wrap items-baseline justify-between gap-x-3">
+                  <span className="text-[var(--text)]">{item.text}</span>
+                  <span className="text-xs text-[var(--muted)]">{item.time}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </main>
     </div>

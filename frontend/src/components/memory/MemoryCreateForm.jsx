@@ -37,17 +37,17 @@ export default function MemoryCreateForm({ onCreated }) {
     }
   }
 
+  const inputClass =
+    "rounded-xl border-2 border-[var(--gold-light)] bg-[var(--section)] px-4 py-3 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--gold)] focus:bg-white";
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-3 p-4 rounded-2xl border border-neutral-200 bg-white"
-    >
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       <input
         type="text"
         placeholder="Title"
         value={form.title}
         onChange={(e) => update("title", e.target.value)}
-        className="px-3 py-2 rounded-lg border border-neutral-200 text-sm outline-none focus:border-[#C9A961]"
+        className={inputClass}
         required
       />
 
@@ -55,7 +55,7 @@ export default function MemoryCreateForm({ onCreated }) {
         <select
           value={form.category}
           onChange={(e) => update("category", e.target.value)}
-          className="flex-1 px-3 py-2 rounded-lg border border-neutral-200 text-sm capitalize outline-none"
+          className={`flex-1 capitalize ${inputClass}`}
         >
           {CATEGORIES.map((c) => (
             <option key={c} value={c}>{c}</option>
@@ -65,7 +65,7 @@ export default function MemoryCreateForm({ onCreated }) {
         <select
           value={form.importance}
           onChange={(e) => update("importance", Number(e.target.value))}
-          className="w-32 px-3 py-2 rounded-lg border border-neutral-200 text-sm outline-none"
+          className={`w-36 ${inputClass}`}
         >
           {[1, 2, 3, 4, 5].map((n) => (
             <option key={n} value={n}>Importance {n}</option>
@@ -78,7 +78,7 @@ export default function MemoryCreateForm({ onCreated }) {
         value={form.content}
         onChange={(e) => update("content", e.target.value)}
         rows={3}
-        className="px-3 py-2 rounded-lg border border-neutral-200 text-sm outline-none resize-none focus:border-[#C9A961]"
+        className={`resize-none ${inputClass}`}
         required
       />
 
@@ -87,16 +87,22 @@ export default function MemoryCreateForm({ onCreated }) {
         placeholder="Tags (comma separated, optional)"
         value={form.tags}
         onChange={(e) => update("tags", e.target.value)}
-        className="px-3 py-2 rounded-lg border border-neutral-200 text-sm outline-none"
+        className={inputClass}
       />
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
-      {success && <p className="text-sm text-green-600">Memory saved.</p>}
+      {error && (
+        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+      )}
+      {success && (
+        <p className="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">
+          Memory saved.
+        </p>
+      )}
 
       <button
         type="submit"
         disabled={loading}
-        className="flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-[#1A1A1A] text-white hover:opacity-90 transition disabled:opacity-50"
+        className="mt-1 inline-flex items-center justify-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <Plus size={16} />
         {loading ? "Saving..." : "Save Memory"}

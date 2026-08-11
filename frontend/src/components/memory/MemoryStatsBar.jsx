@@ -23,14 +23,14 @@ export default function MemoryStatsBar() {
   const categories = Object.entries(stats.by_category || {});
 
   return (
-    <div className="flex flex-wrap items-center gap-2 mb-6">
-      <div className="px-3 py-1.5 rounded-full bg-[#1A1A1A] text-white text-xs font-medium">
+    <div className="flex flex-wrap items-center gap-2">
+      <div className="rounded-full bg-black px-4 py-1.5 text-xs font-medium text-white">
         {stats.total} total {stats.total === 1 ? "memory" : "memories"}
       </div>
       {categories.map(([category, count]) => (
         <div
           key={category}
-          className="px-3 py-1.5 rounded-full bg-white border border-neutral-200 text-xs capitalize text-neutral-600"
+          className="rounded-full border border-[var(--gold-light)] bg-[var(--gold-light)]/50 px-4 py-1.5 text-xs font-medium capitalize text-[var(--gold-dark)]"
         >
           {category}: {count}
         </div>
