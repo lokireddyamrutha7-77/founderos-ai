@@ -36,3 +36,7 @@ Thumbs.db
 # Editor settings
 .vscode/
 .idea/
+
+# Database files
+*.db
+**/*.db
