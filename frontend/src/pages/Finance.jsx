@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DollarSign, TrendingDown, Clock, Wallet, Save, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { DollarSign, TrendingDown, Clock, Wallet, Save, AlertCircle, CheckCircle2, Loader2, Download } from "lucide-react";
 import { getFinanceSnapshot, updateFinanceSnapshot } from "../services/finance";
 
 export default function Finance() {
@@ -8,8 +8,10 @@ export default function Finance() {
   const [expensesInput, setExpensesInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
+
 
   const fetchSnapshot = async () => {
     setLoading(true);
@@ -64,6 +66,38 @@ export default function Finance() {
     }
   };
 
+  const handleDownloadPdf = async () => {
+    setDownloadingPdf(true);
+    setError(null);
+    try {
+      const token = localStorage.getItem("founderos_token");
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+      const response = await fetch(`${baseUrl}/reports/finance/pdf`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to download Finance PDF snapshot.");
+      }
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "finance-snapshot.pdf";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      setError(err.message || "Failed to download PDF.");
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
+
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -93,7 +127,26 @@ export default function Finance() {
             Track high-level revenue, expenses, monthly burn rate, and runway.
           </p>
         </div>
+        <button
+          type="button"
+          onClick={handleDownloadPdf}
+          disabled={downloadingPdf || loading}
+          className="flex items-center gap-2 rounded-xl bg-[#1A1A1A] px-5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-black focus:outline-none focus:ring-2 focus:ring-[var(--gold)] disabled:opacity-50 transition-all cursor-pointer"
+        >
+          {downloadingPdf ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>Generating PDF...</span>
+            </>
+          ) : (
+            <>
+              <Download className="h-4 w-4 text-[var(--gold)]" />
+              <span>Download PDF</span>
+            </>
+          )}
+        </button>
       </header>
+
 
       {/* Loading State */}
       {loading ? (

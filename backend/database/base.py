@@ -7,3 +7,4 @@ from models.memory import Memory
 from models.finance import FinanceSnapshot
 from models.milestone import BusinessMilestone
 from models.inventory import InventoryItem
+from models.advisor import AdvisorReport

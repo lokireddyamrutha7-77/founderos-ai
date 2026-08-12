@@ -108,12 +108,10 @@ def retrieve_relevant_memories(db: Session, keyword: str):
 # set of context - most important memories first, then most recent - rather
 # than trying to keyword-match the user's live chat message (keyword matching
 # was ruled out as the default: it's less predictable for a live demo).
-def get_memories_for_chat_context(db: Session, user_id: int = None, limit: int = 5):
-    query = db.query(Memory)
-    if user_id is not None:
-        query = query.filter(Memory.user_id == user_id)
+def get_memories_for_chat_context(db: Session, user_id: int, limit: int = 5):
     return (
-        query
+        db.query(Memory)
+        .filter(Memory.user_id == user_id)
         .order_by(Memory.importance.desc(), Memory.created_at.desc())
         .limit(limit)
         .all()
