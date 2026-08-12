@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { createMemory } from "../../services/memory";
+import { Input, Textarea, Select } from "../ui/Input";
+import Button from "../ui/Button";
 
 const CATEGORIES = ["idea", "conversation", "goal", "note", "business"];
 
@@ -37,57 +39,51 @@ export default function MemoryCreateForm({ onCreated }) {
     }
   }
 
-  const inputClass =
-    "rounded-xl border-2 border-[var(--gold-light)] bg-[var(--section)] px-4 py-3 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--gold)] focus:bg-white";
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <input
+      <Input
         type="text"
         placeholder="Title"
         value={form.title}
         onChange={(e) => update("title", e.target.value)}
-        className={inputClass}
         required
       />
 
       <div className="flex gap-3">
-        <select
+        <Select
           value={form.category}
           onChange={(e) => update("category", e.target.value)}
-          className={`flex-1 capitalize ${inputClass}`}
+          className="flex-1 capitalize"
         >
           {CATEGORIES.map((c) => (
             <option key={c} value={c}>{c}</option>
           ))}
-        </select>
+        </Select>
 
-        <select
+        <Select
           value={form.importance}
           onChange={(e) => update("importance", Number(e.target.value))}
-          className={`w-36 ${inputClass}`}
+          className="w-40"
         >
           {[1, 2, 3, 4, 5].map((n) => (
             <option key={n} value={n}>Importance {n}</option>
           ))}
-        </select>
+        </Select>
       </div>
 
-      <textarea
+      <Textarea
         placeholder="What do you want to remember?"
         value={form.content}
         onChange={(e) => update("content", e.target.value)}
         rows={3}
-        className={`resize-none ${inputClass}`}
         required
       />
 
-      <input
+      <Input
         type="text"
         placeholder="Tags (comma separated, optional)"
         value={form.tags}
         onChange={(e) => update("tags", e.target.value)}
-        className={inputClass}
       />
 
       {error && (
@@ -99,14 +95,10 @@ export default function MemoryCreateForm({ onCreated }) {
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="mt-1 inline-flex items-center justify-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-      >
+      <Button type="submit" variant="primary" size="lg" disabled={loading} className="mt-1">
         <Plus size={16} />
         {loading ? "Saving..." : "Save Memory"}
-      </button>
+      </Button>
     </form>
   );
 }
