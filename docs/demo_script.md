@@ -92,3 +92,22 @@ every new conversation."
 - [ ] Backup plan if wifi/deployment has issues (local version ready as fallback?)
 - [ ] Confirm exact time limit for the slot
 - [ ] Rehearse with a timer at least twice before Day 19
+
+---
+
+## Technical Defense Quick-Sheet (Person 2 AI Architecture)
+
+1. **Why Structured Output over Freeform Markdown?**
+   - Enables direct schema validation via Pydantic (`AdvisorReport`).
+   - Guarantees predictable key names so Person 3's UI and Person 5's PDF exporter can render fields programmatically without regex string parsing.
+
+2. **Why Exactly 9 Fields?**
+   - Standardized evaluation scope: `idea_score`, `market_validation`, `competitors` (x3), `swot` (3x4), `business_model`, `revenue_suggestions` (x3), `growth_strategy` (x3), `legal_considerations`, `next_steps` (x5).
+   - Prevents missing fields or extra hallucinated fields.
+
+3. **How Does Fallback Protection Guarantee Demo Reliability?**
+   - If Gemini API times out (30s limit), returns 5xx/429 status, or emits empty text, `analyze_startup_idea()` catches `AdvisorGenerationError` and cleanly serves `get_demo_fallback_report()` which is schema-validated against the exact same 9-field contract.
+
+4. **How Are Prompt Injection & Cross-User Memory Leakage Prevented?**
+   - All user inputs, saved memories, and prior Advisor reports are enclosed within strict XML context tags (`<MEMORY_CONTEXT>`, `<ADVISOR_CONTEXT>`, `<FOUNDER_MESSAGE>`) and instructed to be treated as untrusted data.
+   - Memory context retrieval in `/chat` is hard-filtered by `current_user.id` (`user_id=current_user.id`), preventing multi-tenant memory leakage.
