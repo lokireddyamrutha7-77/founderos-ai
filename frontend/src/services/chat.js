@@ -2,14 +2,12 @@ import api from "./api";
 
 function unwrap(res) {
   if (!res.success) {
-    throw new Error(res.error || "Something went wrong");
+    throw new Error(res.error || "Something went wrong sending chat message");
   }
   return res.data;
 }
 
 export async function sendChatMessage(message) {
-  const res = await api.post("/chat", {
-    message,
-  });
+  const res = await api.post("/chat", { message });
   return unwrap(res);
 }

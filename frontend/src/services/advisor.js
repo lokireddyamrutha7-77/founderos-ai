@@ -18,4 +18,3 @@ export async function getLatestReport() {
   const res = await api.get("/advisor/latest");
   return unwrap(res);
 }
-

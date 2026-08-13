@@ -21,10 +21,15 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Allow the frontend dev server to call this backend during development.
+import os
+
+# Configurable origins via ALLOWED_ORIGINS env var (comma-separated), fallback to localhost
+raw_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000")
+allowed_origins = [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

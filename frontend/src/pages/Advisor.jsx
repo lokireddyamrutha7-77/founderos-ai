@@ -25,7 +25,6 @@ export default function Advisor() {
   const [error, setError] = useState(null);
   const [report, setReport] = useState(null);
 
-
   useEffect(() => {
     let active = true;
     async function loadLatestReport() {
@@ -115,7 +114,6 @@ export default function Advisor() {
     if (score >= 50) return "text-amber-600 bg-amber-50 border-amber-200";
     return "text-rose-600 bg-rose-50 border-rose-200";
   };
-
 
   if (fetchingLatest) {
     return (
@@ -236,7 +234,6 @@ export default function Advisor() {
                 </div>
               </div>
               <h2 className="text-xl font-bold text-[var(--text)] mt-1">Startup Idea Report</h2>
-
               <p className="text-xs text-[var(--muted)] mt-1">Comprehensive analysis generated based on current market dynamics.</p>
             </div>
             <div className={`flex items-center gap-4 px-6 py-4 rounded-xl border ${getScoreColor(report.idea_score)} shrink-0`}>
@@ -246,7 +243,6 @@ export default function Advisor() {
               </div>
             </div>
           </div>
-
 
           {/* Grid of Report Sections */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -306,7 +302,6 @@ export default function Advisor() {
                 <h3>SWOT Analysis</h3>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Strengths */}
                 <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200/70">
                   <h4 className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2">Strengths</h4>
                   <ul className="space-y-1.5 text-xs text-emerald-950 list-disc list-inside">
@@ -316,7 +311,6 @@ export default function Advisor() {
                   </ul>
                 </div>
 
-                {/* Weaknesses */}
                 <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/70">
                   <h4 className="text-xs font-bold text-amber-800 uppercase tracking-wider mb-2">Weaknesses</h4>
                   <ul className="space-y-1.5 text-xs text-amber-950 list-disc list-inside">
@@ -326,7 +320,6 @@ export default function Advisor() {
                   </ul>
                 </div>
 
-                {/* Opportunities */}
                 <div className="p-4 rounded-xl bg-blue-50/70 border border-blue-200/70">
                   <h4 className="text-xs font-bold text-blue-800 uppercase tracking-wider mb-2">Opportunities</h4>
                   <ul className="space-y-1.5 text-xs text-blue-950 list-disc list-inside">
@@ -336,7 +329,6 @@ export default function Advisor() {
                   </ul>
                 </div>
 
-                {/* Threats */}
                 <div className="p-4 rounded-xl bg-rose-50/70 border border-rose-200/70">
                   <h4 className="text-xs font-bold text-rose-800 uppercase tracking-wider mb-2">Threats</h4>
                   <ul className="space-y-1.5 text-xs text-rose-950 list-disc list-inside">
@@ -351,7 +343,6 @@ export default function Advisor() {
 
           {/* 5. Revenue & Growth */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Revenue Suggestions */}
             {report.revenue_suggestions && (
               <div className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm space-y-3">
                 <div className="flex items-center gap-2.5 text-neutral-800 font-semibold border-b border-neutral-100 pb-3">
@@ -371,7 +362,6 @@ export default function Advisor() {
               </div>
             )}
 
-            {/* Growth Strategy */}
             {report.growth_strategy && (
               <div className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm space-y-3">
                 <div className="flex items-center gap-2.5 text-neutral-800 font-semibold border-b border-neutral-100 pb-3">
@@ -394,7 +384,6 @@ export default function Advisor() {
 
           {/* 6. Legal & Next Steps */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Legal Considerations */}
             <div className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm space-y-3">
               <div className="flex items-center gap-2.5 text-neutral-800 font-semibold border-b border-neutral-100 pb-3">
                 <Scale className="h-5 w-5 text-neutral-600" />
@@ -405,7 +394,6 @@ export default function Advisor() {
               </p>
             </div>
 
-            {/* Immediate Next Steps */}
             {report.next_steps && (
               <div className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm space-y-3">
                 <div className="flex items-center gap-2.5 text-neutral-800 font-semibold border-b border-neutral-100 pb-3">

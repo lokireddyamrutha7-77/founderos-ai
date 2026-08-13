@@ -12,7 +12,6 @@ export default function Finance() {
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
 
-
   const fetchSnapshot = async () => {
     setLoading(true);
     setError(null);
@@ -118,9 +117,9 @@ export default function Finance() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-4 px-2 sm:px-4">
+    <div className="max-w-6xl mx-auto py-4 px-2 sm:px-4 print:p-0 print:max-w-none">
       {/* Header */}
-      <header className="flex flex-wrap items-center justify-between gap-4 mb-8">
+      <header className="flex flex-wrap items-center justify-between gap-4 mb-8 print:hidden">
         <div>
           <h1 className="text-2xl font-bold sm:text-3xl tracking-tight">Finance Snapshot</h1>
           <p className="mt-1 text-sm text-[var(--muted)]">
@@ -146,7 +145,6 @@ export default function Finance() {
           )}
         </button>
       </header>
-
 
       {/* Loading State */}
       {loading ? (
@@ -253,7 +251,6 @@ export default function Finance() {
           <div>
             <h2 className="text-lg font-semibold text-[var(--text)] mb-4">Key Metrics Overview</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Card 1: Revenue */}
               <div className="animate-fade-in-up rounded-2xl border border-[var(--border)] bg-white p-5 shadow-sm" style={{ animationDelay: "0ms" }}>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wider">Revenue</span>
@@ -267,7 +264,6 @@ export default function Finance() {
                 <p className="mt-1 text-xs text-[var(--muted)]">Gross monthly incoming</p>
               </div>
 
-              {/* Card 2: Expenses */}
               <div className="animate-fade-in-up rounded-2xl border border-[var(--border)] bg-white p-5 shadow-sm" style={{ animationDelay: "80ms" }}>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wider">Expenses</span>
@@ -281,7 +277,6 @@ export default function Finance() {
                 <p className="mt-1 text-xs text-[var(--muted)]">Total monthly outgoing</p>
               </div>
 
-              {/* Card 3: Burn Rate */}
               <div className="animate-fade-in-up rounded-2xl border border-[var(--border)] bg-white p-5 shadow-sm" style={{ animationDelay: "160ms" }}>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wider">Burn Rate</span>
@@ -297,7 +292,6 @@ export default function Finance() {
                 </p>
               </div>
 
-              {/* Card 4: Runway */}
               <div className="animate-fade-in-up rounded-2xl border border-[var(--border)] bg-white p-5 shadow-sm" style={{ animationDelay: "240ms" }}>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wider">Runway</span>
@@ -313,7 +307,6 @@ export default function Finance() {
             </div>
           </div>
 
-          {/* Additional note / disclaimer */}
           <div className="text-xs text-[var(--muted)] italic text-right">
             * Note: Runway calculation is a simplified estimate (Revenue / Burn Rate), for high-level snapshot purposes.
           </div>
