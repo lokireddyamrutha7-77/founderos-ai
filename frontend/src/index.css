@@ -1,128 +1,59 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-cream: #FAF7F0;
   --color-ivory: #FDFBF7;
+  --color-charcoal: #1A1A1A;
   --color-gold: #C9A961;
-  --color-ink: #1A1A1A;
+  --color-brown: #6B6258;
 
-  --font-heading: "Playfair Display", serif;
-  --font-body: "Inter", sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 }
 
-/* =========================
-   FounderOS Design System - Cream / Gold / Ivory / Black
-========================= */
+@layer base {
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-:root{
-  --bg:#FAF7F0;
-  --section:#F5F0E6;
-  --card:#FFFFFF;
-
-  --text:#1A1A1A;
-  --muted:#6B6B6B;
-
-  --gold:#C59D5F;
-  --gold-dark:#8A6A2F;
-  --gold-light:#F1E4CB;
-
-  --border:#E7DFCE;
-
-  --radius:24px;
-
-  --shadow-sm:0 4px 12px rgba(26,26,26,.06);
-  --shadow-md:0 12px 30px rgba(26,26,26,.08);
-  --shadow-lg:0 24px 70px rgba(26,26,26,.12);
-
-  --transition:.35s cubic-bezier(.4,0,.2,1);
-}
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:"Inter",sans-serif;
-  overflow-x:hidden;
-}
-
-h1,h2,h3,h4,h5,h6{
-  font-family:"Playfair Display",serif;
-}
-
-img{
-  display:block;
-  max-width:100%;
-}
-
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-button{
-  cursor:pointer;
-  border:none;
-  outline:none;
-  font-family:inherit;
-}
-
-section{
-  padding:64px 0;
-}
-
-@media (min-width:1024px){
-  section{
-    padding:110px 0;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    color: var(--color-charcoal);
   }
 }
 
-.container{
-  width:min(1280px,92%);
-  margin:auto;
+/* Custom Scrollbar for Premium Feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-::selection{
-  background:var(--gold);
-  color:white;
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
 }
 
-::-webkit-scrollbar{
-  width:8px;
+::-webkit-scrollbar-thumb {
+  background: #E6E1D6;
+  border-radius: 3px;
 }
 
-::-webkit-scrollbar-thumb{
-  background:var(--gold-light);
-  border-radius:100px;
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
 }
 
-::-webkit-scrollbar-track{
-  background:var(--bg);
+/* Fade-in transitions and key animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* =========================
-   Subtle entrance animation - used across cards/sections
-========================= */
-@keyframes fadeInUp{
-  from{
-    opacity:0;
-    transform:translateY(16px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-.animate-fade-in-up{
-  animation:fadeInUp .6s ease-out both;
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

@@ -61,20 +61,26 @@ def login(
     ).first()
 
     if not existing_user:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid email or password"
+        # Demo Mode Enabled: auto-create the user if they do not exist
+        name = form_data.username.split("@")[0].upper()
+        existing_user = User(
+            name=name,
+            email=form_data.username,
+            password_hash=hash_password(form_data.password or "default_password")
         )
-
-    # Verify password
-    if not verify_password(
-        form_data.password,
-        existing_user.password_hash
-    ):
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid email or password"
-        )
+        db.add(existing_user)
+        db.commit()
+        db.refresh(existing_user)
+    else:
+        # Verify password
+        if not verify_password(
+            form_data.password,
+            existing_user.password_hash
+        ):
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid email or password"
+            )
 
     # Create JWT
     access_token = create_access_token(
